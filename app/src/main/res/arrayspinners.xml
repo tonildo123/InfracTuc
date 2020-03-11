@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <string-array android:name="spinnerUno">
+        <item>ESTACIONAR EN PASO PEATONAL</item>
+        <item>ESTACIONAR EN CONTRAMANO</item>
+        <item>ESTACIONAR EN OCHAVA</item>
+        <item>ESTACIONAR EN LUGAR SEÑALIZADO</item>
+        <item>OTRO</item>
+
+
+    </string-array>
+
+    <string-array android:name="spinnerDos">
+        <item>CAMIONETA</item>
+        <item>CAMION</item>
+        <item>TRAFIC</item>
+        <item>MOTOCICLETA</item>
+        <item>COLECTIVO</item>
+        <item>CUATRICICLO</item>
+        <item>OTRO</item>
+    </string-array>
+
+</LinearLayout>

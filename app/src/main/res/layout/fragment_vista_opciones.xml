@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".VistaOpciones">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.50"
+        android:background="@drawable/infractucsiete"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button_realizar_denuncia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="#26ECF0"
+            android:padding="50sp"
+            android:text="@string/texto_iniciar_denuncia"
+            android:textSize="28sp"
+            android:textColor="#FFFFFF"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.50"
+        android:background="@drawable/infractucsiete"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button_ver_denuncias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="#26ECF0"
+
+            android:padding="50sp"
+            android:text="@string/texto_ver_denuncia"
+            android:textSize="30sp"
+            android:textColor="#FFFFFF"/>
+
+    </RelativeLayout>
+</LinearLayout>

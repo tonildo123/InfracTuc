@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">InfracTuc</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="gl_login">continuar con Google</string>
+    <string name="fb_login">Continuar con Facebook</string>
+    <string name="boton_login">Login</string>
+    <string name="boton_registrarme">Registrarme</string>
+    <string name="hint_email">Ingrese Email</string>
+    <string name="hint_password">**********</string>
+    <string name="hint_ubicacion">Ubicacion de la infraccion</string>
+    <string name="boton_siguiente">SIGUIENTE</string>
+    <string name="texto_iniciar_denuncia">INICIAR DENUNCIA</string>
+    <string name="texto_ver_denuncia">VER DENUNCIAS</string>
+    <string name="texto_vacio">SIGUIENTE  </string>
+    <string name="button_alta_registrar">CONFIRMAR REGISTRO</string>
+    <string name="continuar_con_email">CONTINUAR CON EMAIL</string>
+    <string name="no_tenes_una_cuenta">¿no tenes una cuenta?</string>
+    <string name="foto_del_contexto">FOTO DEL CONTEXTO</string>
+    <string name="texto_patente">PATENTE : </string>
+    <string name="texto_fecha_y_hora">FECHA Y HORA : </string>
+    <string name="texto_ubicacion">UBICACION : </string>
+    <string name="texto_tipo_de_infraccion">INFRACCION : </string>
+    <string name="button_confirmar_denuncia">CONFIRMAR DENUNCIA </string>
+    <string name="texto_campo_foto">TOMAR FOTO DEL VEHICULO INFRACTOR Y SU CONTEXTO</string>
+    <string name="button_captura_foto">TOMAR FOTO</string>
+
+
+    <string-array name="tipodeifraccion">
+        <item>TIPO DE INFRACCION</item>
+        <item>ESTACIONAR EN PASO PEATONAL</item>
+        <item>ESTACIONAR EN CONTRAMANO</item>
+        <item>ESTACIONAR EN DOBLE MANO</item>
+        <item>CRUZAR SEMAFORO EN ROJO</item>
+        <item>ESTACIONAR EN OCHAVA</item>
+        <item>ESTACIONAR EN LUGAR SEÑALIZADO</item>
+        <item>OTRO</item>
+
+    </string-array>
+
+    <string-array name="tipodevehiculo">
+
+        <item>TIPO DE VEHICULO</item>
+        <item>CAMION</item>
+        <item>AUTO</item>
+        <item>CAMIONETA</item>
+        <item>MOTOCICLETA</item>
+        <item>TRAFIC</item>
+        <item>COLECTIVO</item>
+        <item>CUATRICICLO</item>
+        <item>OTRO</item>
+
+    </string-array>
+</resources>
