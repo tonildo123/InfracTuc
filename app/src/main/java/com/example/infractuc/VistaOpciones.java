@@ -29,7 +29,8 @@ public class VistaOpciones extends Fragment {
     }
 
     public void LlamarAPredenuncia() {
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ic_contenedor, new VistaCapturaFotografia()).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ic_contenedor,
+                new VistaCapturaFotografia()).commit();
     }
 
     public void LlamarAListaDeDenuncias() {
