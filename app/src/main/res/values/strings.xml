@@ -25,6 +25,12 @@
     <string name="button_confirmar_denuncia">CONFIRMAR DENUNCIA </string>
     <string name="texto_campo_foto">TOMAR FOTO DEL VEHICULO INFRACTOR Y SU CONTEXTO</string>
     <string name="button_captura_foto">TOMAR FOTO</string>
+    <string name="description_photo">descripcion</string>
+
+
+
+
+
 
 
     <string-array name="tipodeifraccion">

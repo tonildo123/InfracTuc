@@ -18,7 +18,7 @@
             android:id="@+id/imagen_de_infractuc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
+            android:contentDescription="@string/description_photo"
             app:srcCompat="@drawable/infractuctres" />
     </LinearLayout>
 
@@ -48,7 +48,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#3F51B5"
-                android:drawableLeft="@drawable/com_facebook_button_icon_blue"
                 android:text="@string/fb_login"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
@@ -89,7 +88,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#F44336"
-                android:drawableLeft="@drawable/googleg_disabled_color_18"
                 android:text="@string/gl_login"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
@@ -125,7 +123,6 @@
             android:id="@+id/boton_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@android:drawable/ic_dialog_email"
             android:text="@string/continuar_con_email" />
 
     </LinearLayout>
