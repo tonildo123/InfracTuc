@@ -17,12 +17,12 @@ public class VistaOpciones extends Fragment {
         this.b_ver_denuncias = (Button) vista.findViewById(R.id.button_ver_denuncias);
         this.b_denuncia.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                VistaOpciones.this.LlamarAPredenuncia();
+                LlamarAPredenuncia();
             }
         });
         this.b_ver_denuncias.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                VistaOpciones.this.LlamarAListaDeDenuncias();
+                LlamarAListaDeDenuncias();
             }
         });
         return vista;
@@ -30,10 +30,11 @@ public class VistaOpciones extends Fragment {
 
     public void LlamarAPredenuncia() {
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ic_contenedor,
-                new VistaCapturaFotografia()).commit();
+                new VistaCapturaFotografia()).addToBackStack(null).commit();
     }
 
     public void LlamarAListaDeDenuncias() {
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ic_contenedor, new VistaVerDenuncias()).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ic_contenedor, new VistaVerDenuncias())
+                .addToBackStack(null).commit();
     }
 }

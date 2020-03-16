@@ -31,11 +31,9 @@ public class VistaRegistro extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
-    DatabaseReference databaseReference;
 
     private Button b_registrarme;
     private EditText txt_mail, txt_password;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,9 +42,6 @@ public class VistaRegistro extends Fragment {
         View vista =  inflater.inflate(R.layout.fragment_vista_registro, container, false);
         //inicializamos el objeto firebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
-        //inicializarFirebase();
-
-
         b_registrarme = vista.findViewById(R.id.button_registrarme_registro);
         txt_mail = vista.findViewById(R.id.campo_email_registro);
         txt_password = vista.findViewById(R.id.campo_password_registro);
@@ -80,10 +75,8 @@ public class VistaRegistro extends Fragment {
             return;
         }
 
-
         progressDialog.setMessage("Realizando registro en linea...");
         progressDialog.show();
-
         //registramos un nuevo usuario
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -117,11 +110,5 @@ public class VistaRegistro extends Fragment {
 
 
     }
-
-
-    public void inicializarFirebase() {
-        this.databaseReference = FirebaseDatabase.getInstance().getReference();
-    }
-
 
 }

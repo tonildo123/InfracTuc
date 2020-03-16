@@ -16,7 +16,7 @@
             android:id="@+id/imagen_de_infractuc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
+            android:contentDescription="@string/description_photo"
             app:srcCompat="@drawable/infractucdos" />
     </LinearLayout>
 

@@ -9,31 +9,56 @@
     tools:context=".VistaCapturaFotografia">
 
 
-    <TextView android:id="@+id/txt_concejos"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="28sp"
         android:layout_weight="0.90"
-        android:text="@string/texto_campo_foto"/>
 
-    <ImageView
-        android:id="@+id/set_image_capture"
+        android:orientation="vertical">
+        <TextView android:id="@+id/txt_concejos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="28sp"
+
+            android:text="@string/texto_campo_foto"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.35"
-        android:contentDescription="@string/description_photo"
-        tools:src="@drawable/fotoejemplo" />
-    <Button
-        android:id="@+id/button_capture_picture"
+        android:layout_weight="0.30"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/set_image_capture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/description_photo"
+            app:srcCompat="@drawable/denunciavial"
+             />
+
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.90"
-        android:text="@string/button_captura_foto"/>
-    <Button
-        android:id="@+id/button_reconocer_patente"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#5DBFE1"
-        android:layout_weight="0.90"
-        android:text="@string/texto_vacio"/>
+        android:layout_weight="0.80"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button_capture_picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_captura_foto" />
+
+        <Button
+            android:id="@+id/button_reconocer_patente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#5DBFE1"
+            android:text="@string/texto_vacio" />
+    </LinearLayout>
+
+
+
+
 </LinearLayout>
