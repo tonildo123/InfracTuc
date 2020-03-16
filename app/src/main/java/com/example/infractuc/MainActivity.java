@@ -15,9 +15,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        llamarLogin();
+    }
 
+    public void llamarLogin() {
         adminstrar_vistas.beginTransaction().replace(R.id.ic_contenedor, login)
                 .commit();
-
     }
 }

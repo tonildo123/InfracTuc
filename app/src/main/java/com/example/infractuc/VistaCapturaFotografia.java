@@ -175,7 +175,7 @@ public class VistaCapturaFotografia extends Fragment {
                     openCamera();
                 } else if (charSequenceArr[i] == "ELEGIR DE GALERIA") {
                     Intent intentAbrirGaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    //intent.setType("Image/*");
+                    intentAbrirGaleria.setType("Image/*");
                     startActivityForResult(Intent.createChooser(intentAbrirGaleria, "SELECCIONA UNA IMAGEN"), SELECT_PICTURE);
                 } else if (charSequenceArr[i] == "SALIR") {
                     dialogInterface.dismiss();
@@ -189,7 +189,7 @@ public class VistaCapturaFotografia extends Fragment {
 
     public void openCamera() {
 
-        /*File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
+        File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
         boolean isDirectoryCreated = file.exists();
 
         if(isDirectoryCreated)
@@ -202,24 +202,26 @@ public class VistaCapturaFotografia extends Fragment {
                     File.separator + image_name;
 
             File new_file= new File(mPhat);
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new_file));
-            startActivityForResult(intent, CODE_PHOTO);
+            //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+
+            //startActivityForResult(intent, CODE_PHOTO);
+
+
+
+            Intent intentTomarFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intentTomarFoto.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new_file));
+            startActivityForResult(intentTomarFoto, CODE_PHOTO);
         }
-*/
 
-        Intent intentTomarFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intentTomarFoto, CODE_PHOTO);
+
+
+
+
 
     }
 
-/*    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("file_path", mPhat);
-    }
 
-*/
 
 
     @Override
@@ -229,14 +231,6 @@ public class VistaCapturaFotografia extends Fragment {
         /*if (resultCode == RESULT_OK) {
             switch(requestCode){
                 case CODE_PHOTO:
-                    MediaScannerConnection.scanFile(getContext(), new String[]{mPhat},
-                            null, new MediaScannerConnection.OnScanCompletedListener() {
-                        @Override
-                        public void onScanCompleted(String s, Uri uri) {
-                            Log.i("ExternalStorage", "Scanned" + s + ":");
-                            Log.i("ExternalStorage", "-> URI" + uri + ":");
-                        }
-                    });
                     Bitmap bitmap =  BitmapFactory.decodeFile(mPhat);
                     imagen_picture.setImageBitmap(bitmap);
                     break;
@@ -251,9 +245,13 @@ public class VistaCapturaFotografia extends Fragment {
 
 
         if(requestCode == CODE_PHOTO && resultCode == RESULT_OK){
-            imagen_picture.setImageURI(data.getData());
+            Bitmap bitmap =  BitmapFactory.decodeFile(mPhat);
+            imagen_picture.setImageBitmap(bitmap);
+           // imagen_picture.setImageURI(data.getData());
         }
         if(requestCode == SELECT_PICTURE && resultCode == RESULT_OK){
+
+
             imagen_picture.setImageBitmap((Bitmap)data.getExtras().get("data"));
         }
 

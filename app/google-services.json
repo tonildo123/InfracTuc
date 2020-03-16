@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "914010161585",
+    "firebase_url": "https://infractuc.firebaseio.com",
+    "project_id": "infractuc",
+    "storage_bucket": "infractuc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914010161585:android:dce5f8e42a6fc493e0bd90",
+        "android_client_info": {
+          "package_name": "com.example.infractuc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "914010161585-qnuib87ksik73mqdb70kf2qlhko2a4bt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.infractuc",
+            "certificate_hash": "c665d98409c82466173210225e0270e4840aa5de"
+          }
+        },
+        {
+          "client_id": "914010161585-sca5k07fignj9e488uuk7t0ek08dc3te.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvg4Pvur8H7rtESpYQXxvmq38Wxer23co"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "914010161585-sca5k07fignj9e488uuk7t0ek08dc3te.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

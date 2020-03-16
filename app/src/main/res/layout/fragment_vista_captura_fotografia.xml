@@ -20,10 +20,9 @@
         android:id="@+id/set_image_capture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.30"
-        tools:src="@drawable/fotoejemplo"
+        android:layout_weight="0.35"
         android:contentDescription="@string/description_photo"
-        />
+        tools:src="@drawable/fotoejemplo" />
     <Button
         android:id="@+id/button_capture_picture"
         android:layout_width="match_parent"

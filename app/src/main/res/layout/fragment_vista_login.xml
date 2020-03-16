@@ -83,14 +83,16 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/boton_google"
+
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/signInButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#F44336"
-                android:text="@string/gl_login"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true" />
+
+
         </LinearLayout>
 
         <LinearLayout
