@@ -55,7 +55,7 @@ public class VistaLogin extends Fragment {
     private CallbackManager callbackManager;
 
     public static final int SIGN_IN_CODE_GOOGLE = 777;
-    public static final int SIGN_IN_CODE_FACEBOOK = 888;
+    //public static final int SIGN_IN_CODE_FACEBOOK = 888;
     public static final String TAG  = "FACELOG";
 
 

@@ -5,7 +5,7 @@ import android.widget.ImageView;
 public class ModeloDenuncia {
 
     private String lugar, fecha_y_hora,tipo_de_infraccion, tipo_de_vehiculo, patente;
-    private ImageView imagen;
+    private ImageView imagen_de_patente, imagen_de_contexto;
 
     public ModeloDenuncia() {
 
@@ -17,7 +17,8 @@ public class ModeloDenuncia {
         this.tipo_de_infraccion = tipo_de_infraccion;
         this.tipo_de_vehiculo = tipo_de_vehiculo;
         this.patente = patente;
-        this.imagen = imagen;
+        this.imagen_de_contexto = imagen_de_contexto;
+        this.imagen_de_patente = imagen_de_patente;
     }
 
     public String getLugar() {
@@ -60,14 +61,21 @@ public class ModeloDenuncia {
         this.patente = patente;
     }
 
-    public ImageView getImagen() {
-        return imagen;
+    public ImageView getImagen_de_patente() {
+        return imagen_de_patente;
     }
 
-    public void setImagen(ImageView imagen) {
-        this.imagen = imagen;
+    public void setImagen_de_patente(ImageView imagen_de_patente) {
+        this.imagen_de_patente = imagen_de_patente;
     }
 
+    public ImageView getImagen_de_contexto() {
+        return imagen_de_contexto;
+    }
+
+    public void setImagen_de_contexto(ImageView imagen_de_contexto) {
+        this.imagen_de_contexto = imagen_de_contexto;
+    }
 
     @Override
     public String toString() {
@@ -77,7 +85,8 @@ public class ModeloDenuncia {
                 "\n Tipo de Infraccion : " + tipo_de_infraccion +
                 "\n Vehiculo Infractor : " + tipo_de_vehiculo +
                 "\n Patente            : " + patente +
-                "\n Foto de Contexto   : " + imagen;
+                "\n Foto de Patente    : " + imagen_de_patente +
+                "\n Foto de Contexto   : " + imagen_de_contexto;
     }
 }
 

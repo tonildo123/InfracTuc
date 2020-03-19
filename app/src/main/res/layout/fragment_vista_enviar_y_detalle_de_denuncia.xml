@@ -47,7 +47,7 @@
     <ImageView
         android:id="@+id/imagen_confirmo_denuncia"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="261dp"
         tools:src="@tools:sample/avatars" />
 
     <Button
