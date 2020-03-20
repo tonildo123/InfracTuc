@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,46 +10,51 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.50"
-        android:background="@drawable/infractucsiete"
+        android:layout_weight="0.10"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/button_realizar_denuncia"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:background="#26ECF0"
-            android:padding="50sp"
             android:text="@string/texto_iniciar_denuncia"
-            android:textSize="28sp"
             android:textColor="#FFFFFF"
-            />
-    </RelativeLayout>
+            android:textSize="28sp" />
 
-    <RelativeLayout
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/texto_denuncia_vial" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/denunciavial"
+            android:contentDescription="@string/description_photo"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.50"
-        android:background="@drawable/infractucsiete"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/button_ver_denuncias"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:background="#26ECF0"
-
-            android:padding="50sp"
             android:text="@string/texto_ver_denuncia"
-            android:textSize="30sp"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#FFFFFF"
+            android:textSize="30sp" />
 
-    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

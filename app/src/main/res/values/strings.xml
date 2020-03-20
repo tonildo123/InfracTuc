@@ -18,7 +18,9 @@
     <string name="hint_email">Ingrese Email</string>
     <string name="hint_password">**********</string>
     <string name="hint_ubicacion">Ubicacion de la infraccion</string>
+    <string name="hint_descripcion">Breve Descripcion EJ: MAL ESTACIONADO</string>
     <string name="boton_siguiente">SIGUIENTE</string>
+    <string name="texto_denuncia_vial">¿VIO USTED UNA INFRACCION VIAL?</string>
     <string name="texto_iniciar_denuncia">INICIAR DENUNCIA</string>
     <string name="texto_ver_denuncia">VER DENUNCIAS</string>
     <string name="texto_vacio">SIGUIENTE  </string>
