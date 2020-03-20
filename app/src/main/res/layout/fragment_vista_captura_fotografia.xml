@@ -12,21 +12,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.90"
+        android:layout_weight="0.70"
 
         android:orientation="vertical">
-        <TextView android:id="@+id/txt_concejos"
+
+        <TextView
+            android:id="@+id/txt_concejos"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="28sp"
+            android:text="@string/texto_campo_foto"
 
-            android:text="@string/texto_campo_foto"/>
+            android:textSize="28sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.30"
+        android:layout_weight="0.50"
         android:orientation="vertical">
 
         <ImageView
@@ -34,10 +36,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/description_photo"
-            app:srcCompat="@drawable/denunciavial"
-             />
+            app:srcCompat="@drawable/fotodenunciavial" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class VistaOpciones extends Fragment {
     private Button b_denuncia;
     private Button b_ver_denuncias;
@@ -30,11 +32,17 @@ public class VistaOpciones extends Fragment {
 
     public void LlamarAPredenuncia() {
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ic_contenedor,
-                new VistaCapturaFotografia()).addToBackStack(null).commit();
+                new VistaCapturaFotografia()).addToBackStack(LlamaraSalir()).commit();
+    }
+
+    public String LlamaraSalir() {
+        FirebaseAuth.getInstance().signOut();
+        return null;
+
     }
 
     public void LlamarAListaDeDenuncias() {
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ic_contenedor, new VistaVerDenuncias())
-                .addToBackStack(null).commit();
+                .addToBackStack(LlamaraSalir()).commit();
     }
 }

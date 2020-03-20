@@ -17,6 +17,7 @@
     <string name="boton_registrarme">Registrarme</string>
     <string name="hint_email">Ingrese Email</string>
     <string name="hint_password">**********</string>
+    <string name="hint_dni">Ingrese DNI</string>
     <string name="hint_ubicacion">Ubicacion de la infraccion</string>
     <string name="hint_descripcion">Breve Descripcion EJ: MAL ESTACIONADO</string>
     <string name="boton_siguiente">SIGUIENTE</string>
@@ -24,6 +25,7 @@
     <string name="texto_iniciar_denuncia">INICIAR DENUNCIA</string>
     <string name="texto_ver_denuncia">VER DENUNCIAS</string>
     <string name="texto_vacio">SIGUIENTE  </string>
+    <string name="texto_descripcion">DESCRIPCION: </string>
     <string name="button_alta_registrar">CONFIRMAR REGISTRO</string>
     <string name="continuar_con_email">CONTINUAR CON EMAIL</string>
     <string name="no_tenes_una_cuenta">¿no tenes una cuenta?</string>
@@ -34,9 +36,12 @@
     <string name="texto_ubicacion">UBICACION : </string>
     <string name="texto_tipo_de_infraccion">INFRACCION : </string>
     <string name="button_confirmar_denuncia">CONFIRMAR DENUNCIA </string>
-    <string name="texto_campo_foto">TOMAR FOTO DEL VEHICULO INFRACTOR Y SU CONTEXTO</string>
+    <string name="texto_campo_foto">RECUERDE TOMAR FOTO DEL VEHICULO INFRACTOR
+        Y SU CONTEXTO (Detalle lo mas completo y breve posible)</string>
     <string name="button_captura_foto">TOMAR FOTO</string>
     <string name="description_photo">descripcion</string>
+    <string name="texto_ultimar_detalle">Solo queda un paso para continuar....</string>
+
 
 
 

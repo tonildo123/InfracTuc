@@ -38,9 +38,9 @@ import static android.app.Activity.RESULT_OK;
 public class VistaPreDenuncia extends Fragment {
 
     private Spinner spiner_vehiculo, spinnr_infraccion;
-    private Button b_siguiente;
+    private Button b_siguiente, b_capture_patente, b_capture_context;
     private EditText txt_patente, txt_ubicacion;
-    private ImageView imagen_cartel;
+    private ImageView imagen_patente, imagen_contexto;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +52,10 @@ public class VistaPreDenuncia extends Fragment {
         b_siguiente = vista.findViewById(R.id.boton_continuar);
         txt_ubicacion = vista.findViewById(R.id.campo_ubicacion);
         txt_patente = vista.findViewById(R.id.campo_patente);
+        imagen_contexto = vista.findViewById(R.id.imagen_del_contexto);
+        imagen_patente = vista.findViewById(R.id.imagen_de_patente);
+        b_capture_context = vista.findViewById(R.id.boton_foto_del_contexto);
+        b_capture_patente = vista.findViewById(R.id.boton_foto_de_patente);
 
         ArrayAdapter<CharSequence> adapter_vehiculo = ArrayAdapter.createFromResource(getActivity(),
                 R.array.tipodevehiculo, android.R.layout.simple_spinner_item);
@@ -63,15 +67,12 @@ public class VistaPreDenuncia extends Fragment {
         adapter_infraccion.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnr_infraccion.setAdapter(adapter_infraccion);
 
-
         b_siguiente.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {DatosAEnviarADenuncia(); }});
 
-                DatosAEnviarADenuncia();
 
-            }
-        });
+
 
         return vista;
     }
