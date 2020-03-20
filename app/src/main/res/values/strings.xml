@@ -11,7 +11,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="gl_login">continuar con Google</string>
+    <string name="gl_login">Continuar con Google</string>
     <string name="fb_login">Continuar con Facebook</string>
     <string name="boton_login">Login</string>
     <string name="boton_registrarme">Registrarme</string>
@@ -27,6 +27,7 @@
     <string name="no_tenes_una_cuenta">¿no tenes una cuenta?</string>
     <string name="foto_del_contexto">FOTO DEL CONTEXTO</string>
     <string name="texto_patente">PATENTE : </string>
+    <string name="texto_vehiculo">VEHICULO : </string>
     <string name="texto_fecha_y_hora">FECHA Y HORA : </string>
     <string name="texto_ubicacion">UBICACION : </string>
     <string name="texto_tipo_de_infraccion">INFRACCION : </string>

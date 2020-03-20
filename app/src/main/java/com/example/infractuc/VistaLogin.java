@@ -20,6 +20,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -27,6 +28,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -35,6 +38,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Arrays;
 
 public class VistaLogin extends Fragment {
 
@@ -46,16 +51,16 @@ public class VistaLogin extends Fragment {
     private Button b_registrarme;
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private ProgressDialog progressDialog;
 
-
     private GoogleApiClient googleApiClient;
+
     private SignInButton signInButtonGoogle;
     private LoginButton  signInButtonFacebook;
     private CallbackManager callbackManager;
 
     public static final int SIGN_IN_CODE_GOOGLE = 777;
-    //public static final int SIGN_IN_CODE_FACEBOOK = 888;
     public static final String TAG  = "FACELOG";
 
 
@@ -65,8 +70,8 @@ public class VistaLogin extends Fragment {
         callbackManager = CallbackManager.Factory.create();
 
         firebaseAuth = FirebaseAuth.getInstance();
-        signInButtonFacebook =  vista.findViewById(R.id.login_button_facebook);
-
+        //signInButtonFacebook =  vista.findViewById(R.id.login_button_facebook);
+        b_facebook = vista.findViewById(R.id.boton_continuar_con_facebook);
         b_login =  vista.findViewById(R.id.boton_login);
         b_registrarme =  vista.findViewById(R.id.boton_registrarme);
         txt_email =  vista.findViewById(R.id.campo_mail);
@@ -78,6 +83,32 @@ public class VistaLogin extends Fragment {
 
         //para iniciar con facebook
 
+        b_facebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager.getInstance().logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
+                LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                        handleFacebookAccessToken(loginResult.getAccessToken());
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Log.d(TAG, "facebook:onCancel");
+                        // ...
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+                        Log.d(TAG, "facebook:onError", error);
+                        // ...
+                    }
+                });
+            }
+        });
+        /*
         signInButtonFacebook.setReadPermissions("email", "public_profile");
         signInButtonFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -97,32 +128,40 @@ public class VistaLogin extends Fragment {
                 Log.d(TAG, "facebook:onError", error);
                 // ...
             }
+        }); */
+
+        // para iniciar con google
+
+        // Configure el inicio de sesión para solicitar el ID del usuario,
+        // la dirección de correo electrónico y el
+        // perfil básico . El ID y el perfil básico se incluyen en DEFAULT_SIGN_IN.
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+
+        signInButtonGoogle.setSize(SignInButton.SIZE_WIDE);
+        signInButtonGoogle.setColorScheme(SignInButton.COLOR_DARK);
+
+        signInButtonGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
         });
 
 
 
 
-        // para iniciar con google
-        signInButtonGoogle.setSize(SignInButton.SIZE_WIDE);
-        signInButtonGoogle.setColorScheme(SignInButton.COLOR_DARK);
 
-        /*
-         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
 
-        googleApiClient = new GoogleApiClient.Builder(getContext())
-                .enableAutoManage(getActivity(), null)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
 
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-                startActivityForResult(intent, SIGN_IN_CODE_GOOGLE);
-            }
-        });*/
+
+
+
+        // para iniciar sesion con mail
+
         b_login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 OnClickButtonLogin();
@@ -133,6 +172,25 @@ public class VistaLogin extends Fragment {
                 LlamarARegistrarme();
             }
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // escuchador de firebase listener
+
+
         return vista;
     }
     @Override
@@ -247,35 +305,6 @@ public class VistaLogin extends Fragment {
 
 
     }
-
-
-    /*@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == SIGN_IN_CODE_GOOGLE) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-        }
-    }
-
-    public void handleSignInResult(GoogleSignInResult result) {
-        if (result.isSuccess()) {
-            Toast.makeText(getContext(), "Bienvenido", Toast.LENGTH_SHORT).show();
-            LlamarAOpciopnes();
-        } else {
-            Toast.makeText(getContext(), "Error al Cotinuar con Google", Toast.LENGTH_SHORT).show();
-        }
-
-
-
-
-    }*/
-
-
-
-
-
 
 
 

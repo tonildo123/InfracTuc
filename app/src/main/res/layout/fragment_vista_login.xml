@@ -43,103 +43,116 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/login_button_facebook"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.90"
-            android:orientation="vertical">
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.90"
-        android:orientation="horizontal">
+            <!-- <com.facebook.login.widget.LoginButton
+                 android:id="@+id/login_button_facebook"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_marginTop="30dp"
+                 android:layout_marginBottom="30dp" /> -->
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.90"
-            android:orientation="vertical"></LinearLayout>
+             <Button
+                 android:id="@+id/boton_continuar_con_facebook"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"
+                 android:background="#2471A3"
+                 android:text="@string/com_facebook_loginview_log_in_button_continue"
+                 android:textColor="#FFFFFF"
+                 android:layout_marginTop="30dp"
+                 android:layout_marginBottom="30dp"
+                 />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.20"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+         </LinearLayout>
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_weight="0.90"
+             android:orientation="vertical">
+         </LinearLayout>
+
+     </LinearLayout>
+
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:layout_weight="0.90"
+         android:orientation="horizontal">
+
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_weight="0.90"
+             android:orientation="vertical"></LinearLayout>
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_weight="0.20"
+             android:gravity="center_vertical"
+             android:orientation="vertical">
 
 
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/boton_login_google"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true" />
+             <com.google.android.gms.common.SignInButton
+                 android:id="@+id/boton_login_google"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_centerHorizontal="true"
+                 android:layout_centerVertical="true" />
 
 
-        </LinearLayout>
+         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.90"
-            android:orientation="vertical"></LinearLayout>
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_weight="0.90"
+             android:orientation="vertical"></LinearLayout>
 
-    </LinearLayout>
+     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="555dp"
-        android:layout_weight="0.60"
-        android:orientation="vertical">
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="555dp"
+         android:layout_weight="0.60"
+         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/campo_mail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_email" />
+         <EditText
+             android:id="@+id/campo_mail"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:hint="@string/hint_email" />
 
-        <EditText
-            android:id="@+id/campo_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_password" />
+         <EditText
+             android:id="@+id/campo_password"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:hint="@string/hint_password" />
 
-        <Button
-            android:id="@+id/boton_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/continuar_con_email" />
+         <Button
+             android:id="@+id/boton_login"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="@string/continuar_con_email" />
 
-    </LinearLayout>
+     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.90"
-        android:orientation="vertical">
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:layout_weight="0.90"
+         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/boton_registrarme"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:text="@string/no_tenes_una_cuenta" />
-    </LinearLayout>
+         <Button
+             android:id="@+id/boton_registrarme"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="#FFFFFF"
+             android:text="@string/no_tenes_una_cuenta" />
+     </LinearLayout>
 
-</LinearLayout>
+ </LinearLayout>
