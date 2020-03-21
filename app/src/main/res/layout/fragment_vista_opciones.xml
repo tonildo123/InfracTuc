@@ -16,14 +16,11 @@
         android:layout_weight="0.10"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button_realizar_denuncia"
+        <TextView
+            android:id="@+id/txt_nombre_de_usuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#26ECF0"
-            android:text="@string/texto_iniciar_denuncia"
-            android:textColor="#FFFFFF"
-            android:textSize="28sp" />
+            android:gravity="center_horizontal" />
 
         <TextView
             android:id="@+id/textView4"
@@ -31,6 +28,15 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/texto_denuncia_vial" />
+
+        <Button
+            android:id="@+id/button_realizar_denuncia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#2471A3"
+            android:text="@string/texto_iniciar_denuncia"
+            android:textColor="#FFFFFF"
+            android:textSize="28sp" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -51,10 +57,17 @@
             android:id="@+id/button_ver_denuncias"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#26ECF0"
+            android:background="#2471A3"
             android:text="@string/texto_ver_denuncia"
             android:textColor="#FFFFFF"
             android:textSize="30sp" />
-
+        <Button
+            android:id="@+id/button_salir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#26ECF0"
+            android:text="@string/boton_salir"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp" />
     </LinearLayout>
 </LinearLayout>
