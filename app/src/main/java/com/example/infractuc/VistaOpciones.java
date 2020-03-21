@@ -55,6 +55,9 @@ public class VistaOpciones extends Fragment {
             }
         });
         return vista;
+
+
+
     }
 
     public void LlamarAPredenuncia() {
