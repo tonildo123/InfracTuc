@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.10"
+        android:layout_weight="0.20"
         android:orientation="vertical">
 
         <TextView
@@ -29,6 +29,21 @@
             android:gravity="center_horizontal"
             android:text="@string/texto_denuncia_vial" />
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/description_photo"
+            android:src="@drawable/denunciavial" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.80"
+        android:orientation="vertical">
+
         <Button
             android:id="@+id/button_realizar_denuncia"
             android:layout_width="match_parent"
@@ -38,29 +53,15 @@
             android:textColor="#FFFFFF"
             android:textSize="28sp" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/denunciavial"
-            android:contentDescription="@string/description_photo"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.50"
-        android:orientation="vertical">
-
         <Button
             android:id="@+id/button_ver_denuncias"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#2471A3"
+            android:background="#4A7197"
             android:text="@string/texto_ver_denuncia"
             android:textColor="#FFFFFF"
             android:textSize="30sp" />
+
         <Button
             android:id="@+id/button_salir"
             android:layout_width="match_parent"

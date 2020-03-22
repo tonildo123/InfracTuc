@@ -28,15 +28,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 //import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -105,12 +100,14 @@ public class VistaLogin extends Fragment {
                     @Override
                     public void onCancel() {
                         Log.d(TAG, "facebook:onCancel");
+                        Toast.makeText(getActivity(), "No se pudo acceder intente con otro metodo", Toast.LENGTH_LONG).show();
                         // ...
                     }
 
                     @Override
                     public void onError(FacebookException error) {
                         Log.d(TAG, "facebook:onError", error);
+                        Toast.makeText(getActivity(), "No se pudo acceder intente con otro metodo", Toast.LENGTH_LONG).show();
                         // ...
                     }
                 });
@@ -150,7 +147,7 @@ public class VistaLogin extends Fragment {
 
         return vista;
     }
-
+    //Codigo del ciclo de vida
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, SIGN_IN_CODE_GOOGLE);
@@ -163,18 +160,22 @@ public class VistaLogin extends Fragment {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         if(currentUser != null){
-            updateUI();
+            ParaPasar(null);
         }
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getContext());
 
         if(account != null){
-            updateUI();
+            updateUI(null);
         }
     }
 
-    private void updateUI() {
-        Toast.makeText(getActivity(), "Has Ingresado Correctamente!", Toast.LENGTH_LONG).show();
-        LlamarAOpciopnes();
+    private void updateUI( FirebaseUser user) {
+
+        if(user != null){
+            Toast.makeText(getActivity(), "Has Ingresado Correctamente!", Toast.LENGTH_LONG).show();
+            LlamarAOpciopnes();
+        }
+
     }
 
     @Override
@@ -196,21 +197,7 @@ public class VistaLogin extends Fragment {
 
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> task) {
-        try {
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getContext());
 
-            // Signed in successfully, show authenticated UI.
-            firebaseAuthWithGoogle(account);
-        } catch (Exception e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "signInResult:failed code=" + e);
-            updateUI();
-        }
-
-
-    }
 
     // para google
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -225,17 +212,49 @@ public class VistaLogin extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            updateUI();
+                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            updateUI();
+                            updateUI(null);
                         }
 
                         // ...
                     }
                 });
     }
+    private void handleSignInResult(Task<GoogleSignInAccount> task) {
+        try {
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getContext());
+
+            // Signed in successfully, show authenticated UI.
+            firebaseAuthWithGoogle(account);
+        } catch (Exception e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e);
+            updateUI(null);
+        }
+
+
+    }
+    // para el face
+    public void ParaPasar(FirebaseUser user) {
+
+        if(user!=null){
+            String nombre = user.getDisplayName();
+            String foto = user.getPhotoUrl().toString();
+
+            Bundle enviar = new Bundle();
+
+            enviar.putString("Usuario",nombre);
+            enviar.putString("Foto",foto);
+            VistaEnviar_y_detalleDeDenuncia vistaEnviar_y_detalleDeDenuncia = new VistaEnviar_y_detalleDeDenuncia();
+            vistaEnviar_y_detalleDeDenuncia.setArguments(enviar);
+            LlamarAOpciopnes();
+        }
+    }
+
     // para facebook
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
@@ -250,14 +269,16 @@ public class VistaLogin extends Fragment {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             b_facebook.setEnabled(true);
-                            updateUI();
+                            ParaPasar(user);
+                            //updateUI();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getContext(), "Authentication failed.",
+                            Toast.makeText(getContext(), "Error al autentificar.",
                                     Toast.LENGTH_SHORT).show();
                             b_facebook.setEnabled(true);
-                            updateUI();
+                            //updateUI();
+                            ParaPasar(null);
                         }
 
                         // ...
@@ -267,8 +288,10 @@ public class VistaLogin extends Fragment {
 
 
 
+    // para todo
 
     public void LlamarAOpciopnes() {
+        Toast.makeText(getActivity(), "Has Ingresado Correctamente!", Toast.LENGTH_LONG).show();
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ic_contenedor,
                 new VistaOpciones()).addToBackStack(null).commit();
     }

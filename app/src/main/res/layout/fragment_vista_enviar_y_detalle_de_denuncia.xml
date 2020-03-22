@@ -12,81 +12,131 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.7"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/patente"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/texto_descripcion" />
-
-            <TextView
-                android:id="@+id/lugar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/texto_ubicacion" />
-
-            <TextView
-                android:id="@+id/infraccion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/texto_tipo_de_infraccion" />
+            android:layout_weight="0.95"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/fecha_y_hora"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.60"
                 android:text="@string/texto_fecha_y_hora" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/txt_fecha_y_hora"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/texto_vehiculo" />
-
-
+                android:layout_height="match_parent"
+                android:layout_weight="0.40"
+                android:text="TextView" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:orientation="vertical">
+            android:layout_weight="0.95"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txt_confirmo_patente"
+                android:id="@+id/lugar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:layout_height="match_parent"
+                android:layout_weight="0.60"
+                android:text="@string/texto_ubicacion" />
 
             <TextView
                 android:id="@+id/txt_confirmo_ubicacion"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.40"
                 android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.95"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txt_confirmo_infraccion"
+                android:id="@+id/vehiculo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/txt_fecha_y_hora"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:layout_height="match_parent"
+                android:layout_weight="0.60"
+                android:text="@string/texto_vehiculo" />
 
             <TextView
                 android:id="@+id/txt_confirmo_vehiculo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.40"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.95"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/infraccion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.60"
+                android:text="@string/texto_tipo_de_infraccion" />
+
+            <TextView
+                android:id="@+id/txt_confirmo_infraccion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.40"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.95"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/patente"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:text="@string/texto_patente" />
+
+            <TextView
+                android:id="@+id/txt_confirmo_patente"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.40"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.95"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.60"
+                android:text="@string/texto_descripcion" />
+
+            <TextView
+                android:id="@+id/txt_confirmo_descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.40"
                 android:text="TextView" />
         </LinearLayout>
 

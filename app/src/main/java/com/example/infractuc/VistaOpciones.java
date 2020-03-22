@@ -20,8 +20,7 @@ import java.net.URI;
 import java.net.URL;
 
 public class VistaOpciones extends Fragment {
-    private Button b_denuncia;
-    private Button b_ver_denuncias;
+    private Button b_denuncia, b_salir,b_ver_denuncias;
     private TextView texto_de_bienvenida;
     private ImageView imagen_de_facebook;
 
@@ -29,9 +28,12 @@ public class VistaOpciones extends Fragment {
         View vista = inflater.inflate(R.layout.fragment_vista_opciones, container, false);
         b_denuncia = (Button) vista.findViewById(R.id.button_realizar_denuncia);
         b_ver_denuncias = (Button) vista.findViewById(R.id.button_ver_denuncias);
+        b_salir = (Button) vista.findViewById(R.id.button_salir);
         texto_de_bienvenida = vista.findViewById(R.id.txt_nombre_de_usuario);
         imagen_de_facebook = vista.findViewById(R.id.imageView2);
 
+
+        // Si entra por google
         GoogleSignInAccount cuenta = GoogleSignIn.getLastSignedInAccount(getContext());
         if(cuenta!= null){
             String nombre = cuenta.getDisplayName();
@@ -44,6 +46,18 @@ public class VistaOpciones extends Fragment {
         }
 
 
+        // si entra por facebook
+        Bundle data = this.getArguments();
+        if(data != null){
+            String usuario = data.getString("Usuario");
+            String imagen_desde_facebook = data.getString("Foto");
+
+            texto_de_bienvenida.setText(usuario);
+            Glide.with(getContext())
+                    .load(imagen_desde_facebook)
+                    .into(imagen_de_facebook);
+                        }
+        
         b_denuncia.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 LlamarAPredenuncia();
@@ -54,21 +68,24 @@ public class VistaOpciones extends Fragment {
                 LlamarAListaDeDenuncias();
             }
         });
+        b_salir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LlamaraSalir();
+            }
+        });
         return vista;
-
-
-
     }
 
     public void LlamarAPredenuncia() {
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ic_contenedor,
-                new VistaCapturaFotografia()).addToBackStack(null).commit();
+                new VistaPreDenuncia()).addToBackStack(null).commit();
     }
 
-    public String LlamaraSalir() {
+    public void LlamaraSalir() {
         FirebaseAuth.getInstance().signOut();
-        return null;
-
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ic_contenedor, new VistaLogin())
+                .addToBackStack(null).commit();
     }
 
     public void LlamarAListaDeDenuncias() {

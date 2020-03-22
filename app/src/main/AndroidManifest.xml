@@ -30,6 +30,11 @@
             </intent-filter>
         </activity>
 
+
+
+
+
+
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
         <activity android:name="com.facebook.FacebookActivity"
@@ -43,6 +48,21 @@
             <data android:scheme="@string/fb_login_protocol_scheme" />
         </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="ocr" />
+
+
+        <!-- PARA ASUR CAMARA EN ANDROID 7 o mas -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
 
     </application>
 

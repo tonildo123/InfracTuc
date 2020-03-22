@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+
+    <external-path
+        name="external_extorage_root"
+        path=".">
+
+    </external-path>
+</paths>
