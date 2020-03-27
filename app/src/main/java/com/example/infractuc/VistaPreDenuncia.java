@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -32,6 +34,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -39,6 +42,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,22 +57,24 @@ import static android.app.Activity.RESULT_OK;
  */
 public class VistaPreDenuncia extends Fragment {
     VistaEnviar_y_detalleDeDenuncia vistaEnviar_y_detalleDeDenuncia = new VistaEnviar_y_detalleDeDenuncia();
+
+    private final int PERMISSIONS = 100;
+    private LinearLayout linearView;
     private static String CARPETA_RAIZ = "myInfraTucApp";
     private static String CARPETA_de_IMAGENES = "Imagenes";
     private static String RUTA_IMAGEN = CARPETA_RAIZ + CARPETA_de_IMAGENES;
     private String phat;
-    private Bitmap bitmap_contexto;
 
 
     private Spinner spiner_vehiculo, spinnr_infraccion;
-    private Button b_siguiente, b_capture_patente, b_capture_context;
-    private EditText txt_patente, txt_ubicacion,txt_descripcion;
-    private ImageView imagen_patente, imagen_contexto;
+    private Button b_siguiente, b_capture_context,b_capture_patente;
+    private EditText txt_ubicacion,txt_descripcion;
+    private ImageView  imagen_contexto, imagen_patente;
+    private TextView texto_patente;
 
-    private final int PERMISSIONS = 100;
     private final int CODE_PHOTO = 200;
     private final int SELECT_PICTURE = 300;
-    private LinearLayout linearView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,12 +84,21 @@ public class VistaPreDenuncia extends Fragment {
         spiner_vehiculo = vista.findViewById(R.id.spinner);
         spinnr_infraccion = vista.findViewById(R.id.spinner2);
         b_siguiente = vista.findViewById(R.id.boton_continuar);
+        imagen_patente = vista.findViewById(R.id.imagen_de_patente);
+        b_capture_patente = vista.findViewById(R.id.boton_foto_de_patente);
         txt_ubicacion = vista.findViewById(R.id.campo_ubicacion);
         txt_descripcion = vista.findViewById(R.id.campo_descripcion);
         imagen_contexto = vista.findViewById(R.id.imagen_del_contexto);
-        imagen_patente = vista.findViewById(R.id.imagen_de_patente);
+        texto_patente =  vista.findViewById(R.id.campo_patente_setear);
+
         b_capture_context = vista.findViewById(R.id.boton_foto_del_contexto);
-        b_capture_patente = vista.findViewById(R.id.boton_foto_de_patente);
+
+        if(mayRequestStoragePermission()){
+            b_capture_patente.setEnabled(true);
+            b_capture_context.setEnabled(true);}
+        else{
+            b_capture_patente.setEnabled(false);
+            b_capture_context.setEnabled(false);}
 
         ArrayAdapter<CharSequence> adapter_vehiculo = ArrayAdapter.createFromResource(getActivity(),
                 R.array.tipodevehiculo, android.R.layout.simple_spinner_item);
@@ -95,15 +110,22 @@ public class VistaPreDenuncia extends Fragment {
         adapter_infraccion.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnr_infraccion.setAdapter(adapter_infraccion);
 
+        b_capture_patente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OpcionesDelBotonPatente();
+            }
+        });
         b_siguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
 
                 String descripcion_a_enviar =  txt_descripcion.getText().toString();
                 String ubicacion_a_enviar = txt_ubicacion.getText().toString();
                 String infraccion_a_enviar = spinnr_infraccion.getSelectedItem().toString();
                 String vehiculo_a_enviar = spiner_vehiculo.getSelectedItem().toString();
-
+                String patente_a_enviar =  texto_patente.getText().toString();
                 Date date = new Date();
                 DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
                 String hora = hourFormat.format(date);
@@ -113,24 +135,14 @@ public class VistaPreDenuncia extends Fragment {
                 String imagen_en_bitmap = BitMapToString();
 
 
-                DatosAEnviarADenuncia(descripcion_a_enviar, ubicacion_a_enviar, infraccion_a_enviar,vehiculo_a_enviar, hora, fecha, null, imagen_en_bitmap );
+                DatosAEnviarADenuncia(descripcion_a_enviar, ubicacion_a_enviar, infraccion_a_enviar,vehiculo_a_enviar, hora, fecha, patente_a_enviar, imagen_en_bitmap );
             }});
 
 
-        if(mayRequestStoragePermission()){
-            b_capture_context.setEnabled(true);
-            b_capture_patente.setEnabled(true);}
-        else{
-            b_capture_context.setEnabled(false);
-            b_capture_patente.setEnabled(false);}
 
 
-        b_capture_patente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                OpcionesDelBotonPatente();
-            }
-        });
+
+
         b_capture_context.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,9 +153,25 @@ public class VistaPreDenuncia extends Fragment {
         return vista;
     }
 
-    // Para BOTON PATENTE
-    public void OpcionesDelBotonPatente() {
+    // Switch para botones
+    public void OpcionesDeBotonesEnPreDenuncia(int botones){
+        switch (botones){
+
+
+
+        }
+
+
+
+
     }
+
+
+    public void BotonSiguiente(){
+
+    }
+
+
 
 
     // para BOTON CONETXTO
@@ -159,15 +187,20 @@ public class VistaPreDenuncia extends Fragment {
                 if (charSequenceArr[i] == "TOMAR FOTO") {
                     openCamera();
                 } else if (charSequenceArr[i] == "ELEGIR DE GALERIA") {
-                    Intent intentAbrirGaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intentAbrirGaleria.setType("Image/*");
-                    startActivityForResult(Intent.createChooser(intentAbrirGaleria, "SELECCIONA UNA IMAGEN"), SELECT_PICTURE);
+                    TomarFotoDeGaleria();
                 } else if (charSequenceArr[i] == "SALIR") {
                     dialogInterface.dismiss();
                 }
             }
         });
         builder.show();
+    }
+
+    public void TomarFotoDeGaleria() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        galleryIntent.setType("image/*");
+        startActivityForResult(galleryIntent, SELECT_PICTURE);
     }
 
 
@@ -224,12 +257,38 @@ public class VistaPreDenuncia extends Fragment {
                         }
                     });
                     Bitmap bitmap =  BitmapFactory.decodeFile(phat);
+
+                    ExifInterface exif = null;
+                    try {
+                        exif = new ExifInterface(phat);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+
+                    Matrix matrix = new Matrix();
+                    switch (orientation) {
+                        case ExifInterface.ORIENTATION_ROTATE_90:
+                            matrix.postRotate(90);
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_180:
+                            matrix.postRotate(180);
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_270:
+                            matrix.postRotate(270);
+                            break;
+                        default:
+                            break;
+                    }
                     imagen_contexto.setImageBitmap(bitmap);
                     break;
 
                 case SELECT_PICTURE:
-
-                    imagen_contexto.setImageBitmap((Bitmap)data.getExtras().get("data"));
+                    if (data != null) {
+                       // Uri imageUri = data.getData();
+                        // imagen_contexto.setImageURI(imageUri);
+                        imagen_contexto.setImageBitmap((Bitmap)data.getExtras().get("data"));
+                    }
                     break;
             }
 
@@ -269,7 +328,7 @@ public class VistaPreDenuncia extends Fragment {
         enviar.putString("Vehiculo",vehiculo_a_enviar);
         enviar.putString("Hora",hora);
         enviar.putString("Fecha",fecha);
-        enviar.putString("Patente",fecha);
+        enviar.putString("Patente",patente);
         enviar.putString("FotoContexto",foto_contexto);
 
 
@@ -279,35 +338,67 @@ public class VistaPreDenuncia extends Fragment {
                 addToBackStack(null).commit();
     }
 
+// gestion de botones en Vista pre denuncia
 
 
-    //GESTION DE PERMISOS
-private boolean mayRequestStoragePermission() {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
-        return true;
 
 
-    if((ContextCompat.checkSelfPermission(getContext(),
-            Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED)
-            && (ContextCompat.checkSelfPermission(getContext(),
-            CAMERA)==PackageManager.PERMISSION_GRANTED)){
-        return true;
-    }
-    if((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) || (shouldShowRequestPermissionRationale(CAMERA))){
-        Snackbar.make(linearView, "Los permisos son necesarios para poder usar la aplicación",
-                Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
-            @TargetApi(Build.VERSION_CODES.M)
-            @Override
-            public void onClick(View v) {
-                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, PERMISSIONS);
+
+
+// para patente y permisos
+// Para BOTON PATENTE
+public void OpcionesDelBotonPatente() {
+
+    final CharSequence[] options = {"TOMAR FOTO", "ELEGIR DE GALERIA", "SALIR"};
+    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+    builder.setTitle("Elige una opcion");
+    builder.setItems(options, new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialogInterface, int i) {
+            CharSequence[] charSequenceArr = options;
+            if (charSequenceArr[i] == "TOMAR FOTO") {
+                openCameraPatente();
+            } else if (charSequenceArr[i] == "ELEGIR DE GALERIA") {
+                TomarFotoDeGaleriaPatente();
+            } else if (charSequenceArr[i] == "SALIR") {
+                dialogInterface.dismiss();
             }
-        }).show();
-    }else{
-        requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, PERMISSIONS);
-    }
-    return false;
+        }
+    });
+    builder.show();
 
 }
+
+    public void openCameraPatente() {
+    }
+    private void TomarFotoDeGaleriaPatente() {
+    }
+
+    //GESTION DE PERMISOS
+    public boolean mayRequestStoragePermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+            return true;
+        if((ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED)
+                && (ContextCompat.checkSelfPermission(getContext(),
+                CAMERA)==PackageManager.PERMISSION_GRANTED)){
+            return true;
+        }
+        if((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) || (shouldShowRequestPermissionRationale(CAMERA))){
+            Snackbar.make(linearView, "Los permisos son necesarios para poder usar la aplicación",
+                    Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
+                @TargetApi(Build.VERSION_CODES.M)
+                @Override
+                public void onClick(View v) {
+                    requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, PERMISSIONS);
+                }
+            }).show();
+        }else{
+            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, PERMISSIONS);
+        }
+        return false;
+
+    }
+
     private void showExplanation() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Permisos denegados");
@@ -340,12 +431,13 @@ private boolean mayRequestStoragePermission() {
         if(requestCode == PERMISSIONS){
             if(grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(getContext(), "Permisos aceptados", Toast.LENGTH_SHORT).show();
-                b_capture_context.setEnabled(true);
                 b_capture_patente.setEnabled(true);
+                b_capture_context.setEnabled(true);
             }
         }else{
             showExplanation();
         }
     }
+
 
 }

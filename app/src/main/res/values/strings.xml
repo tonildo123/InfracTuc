@@ -6,9 +6,6 @@
     <string name="fb_login_protocol_scheme">fb856617168085620</string>
 
 
-
-
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="gl_login">Continuar con Google</string>
@@ -42,12 +39,6 @@
     <string name="button_captura_foto">TOMAR FOTO</string>
     <string name="description_photo">descripcion</string>
     <string name="texto_ultimar_detalle">Solo queda un paso para continuar....</string>
-
-
-
-
-
-
 
 
     <string-array name="tipodeifraccion">

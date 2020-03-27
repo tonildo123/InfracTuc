@@ -4,53 +4,40 @@ import android.widget.ImageView;
 
 public class ModeloDenuncia {
 
-    private String lugar, fecha_y_hora,tipo_de_infraccion, tipo_de_vehiculo, patente;
-    private ImageView imagen_de_patente, imagen_de_contexto;
+    private String infraccion, descricion, patente, vehiculo, fecha, ubicacion, id_infraccion;
+
 
     public ModeloDenuncia() {
 
     }
 
-    public ModeloDenuncia(String lugar, String fecha_y_hora, String tipo_de_infraccion, String tipo_de_vehiculo, String patente, ImageView imagen) {
-        this.lugar = lugar;
-        this.fecha_y_hora = fecha_y_hora;
-        this.tipo_de_infraccion = tipo_de_infraccion;
-        this.tipo_de_vehiculo = tipo_de_vehiculo;
+    public ModeloDenuncia(String infraccion, String descricion,
+                          String patente, String vehiculo, String fecha,
+                          String ubicacion,String id_infraccion) {
+        this.infraccion = infraccion;
+        this.descricion = descricion;
         this.patente = patente;
-        this.imagen_de_contexto = imagen_de_contexto;
-        this.imagen_de_patente = imagen_de_patente;
+        this.vehiculo = vehiculo;
+        this.fecha = fecha;
+        this.ubicacion = ubicacion;
+        this.id_infraccion = id_infraccion;
+
     }
 
-    public String getLugar() {
-        return lugar;
+    public String getInfraccion() {
+        return infraccion;
     }
 
-    public void setLugar(String lugar) {
-        this.lugar = lugar;
+    public void setInfraccion(String infraccion) {
+        this.infraccion = infraccion;
     }
 
-    public String getFecha_y_hora() {
-        return fecha_y_hora;
+    public String getDescricion() {
+        return descricion;
     }
 
-    public void setFecha_y_hora(String fecha_y_hora) {
-        this.fecha_y_hora = fecha_y_hora;
-    }
-
-    public String getTipo_de_infraccion() {
-        return tipo_de_infraccion;
-    }
-
-    public void setTipo_de_infraccion(String tipo_de_infraccion) {
-        this.tipo_de_infraccion = tipo_de_infraccion;
-    }
-
-    public String getTipo_de_vehiculo() {
-        return tipo_de_vehiculo;
-    }
-
-    public void setTipo_de_vehiculo(String tipo_de_vehiculo) {
-        this.tipo_de_vehiculo = tipo_de_vehiculo;
+    public void setDescricion(String descricion) {
+        this.descricion = descricion;
     }
 
     public String getPatente() {
@@ -61,32 +48,49 @@ public class ModeloDenuncia {
         this.patente = patente;
     }
 
-    public ImageView getImagen_de_patente() {
-        return imagen_de_patente;
+    public String getVehiculo() {
+        return vehiculo;
     }
 
-    public void setImagen_de_patente(ImageView imagen_de_patente) {
-        this.imagen_de_patente = imagen_de_patente;
+    public void setVehiculo(String vehiculo) {
+        this.vehiculo = vehiculo;
     }
 
-    public ImageView getImagen_de_contexto() {
-        return imagen_de_contexto;
+    public String getFecha() {
+        return fecha;
     }
 
-    public void setImagen_de_contexto(ImageView imagen_de_contexto) {
-        this.imagen_de_contexto = imagen_de_contexto;
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
+
+
+    public String getId_infraccion() {
+        return id_infraccion;
+    }
+
+    public void setId_infraccion(String id_infraccion) {
+        this.id_infraccion = id_infraccion;
     }
 
     @Override
     public String toString() {
-        return "Detalles de la Denuncia Vial/ Infraccion \n" +
-                "\n lugar              : " + lugar +
-                "\n Fecha y Hora       : " + fecha_y_hora +
-                "\n Tipo de Infraccion : " + tipo_de_infraccion +
-                "\n Vehiculo Infractor : " + tipo_de_vehiculo +
-                "\n Patente            : " + patente +
-                "\n Foto de Patente    : " + imagen_de_patente +
-                "\n Foto de Contexto   : " + imagen_de_contexto;
+        return "Detalle de la enuncia vial" +
+                "\n infraccion          ='" + infraccion +
+                "\n descricion          ='" + descricion +
+                "\n patente             ='" + patente +
+                "\n vehiculo            ='" + vehiculo +
+                "\n fecha               ='" + fecha +
+                "\n ubicacion           ='" + ubicacion + '}';
     }
 }
 
