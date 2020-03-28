@@ -70,10 +70,7 @@ public class VistaOpciones extends Fragment {
             String usuario = "Bienvenido a infracTuc, ya puede realizar denuncias viales!";
             texto_de_bienvenida.setText(usuario);
             estado ="Con Email";
-
         }
-
-
         b_denuncia.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) { MenuDEBotones(b_denuncia.getId()); } });
         b_ver_denuncias.setOnClickListener(new View.OnClickListener() {

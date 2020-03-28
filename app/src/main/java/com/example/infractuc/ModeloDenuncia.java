@@ -4,19 +4,20 @@ import android.widget.ImageView;
 
 public class ModeloDenuncia {
 
-    private String infraccion, descricion, patente, vehiculo, fecha, ubicacion, id_infraccion;
+    private String infraccion, descripcion, patente, contexto, vehiculo, fecha, ubicacion, id_infraccion;
 
 
     public ModeloDenuncia() {
 
     }
 
-    public ModeloDenuncia(String infraccion, String descricion,
-                          String patente, String vehiculo, String fecha,
+    public ModeloDenuncia(String infraccion, String descripcion,
+                          String patente, String contexto, String vehiculo, String fecha,
                           String ubicacion,String id_infraccion) {
         this.infraccion = infraccion;
-        this.descricion = descricion;
+        this.descripcion = descripcion;
         this.patente = patente;
+        this.contexto = contexto;
         this.vehiculo = vehiculo;
         this.fecha = fecha;
         this.ubicacion = ubicacion;
@@ -33,11 +34,11 @@ public class ModeloDenuncia {
     }
 
     public String getDescricion() {
-        return descricion;
+        return descripcion;
     }
 
-    public void setDescricion(String descricion) {
-        this.descricion = descricion;
+    public void setDescricion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public String getPatente() {
@@ -46,6 +47,14 @@ public class ModeloDenuncia {
 
     public void setPatente(String patente) {
         this.patente = patente;
+    }
+
+    public String getContexto() {
+        return contexto;
+    }
+
+    public void setContexto(String contexto) {
+        this.contexto = contexto;
     }
 
     public String getVehiculo() {
@@ -86,7 +95,7 @@ public class ModeloDenuncia {
     public String toString() {
         return "Detalle de la enuncia vial" +
                 "\n infraccion          ='" + infraccion +
-                "\n descricion          ='" + descricion +
+                "\n descripcion         ='" + descripcion +
                 "\n patente             ='" + patente +
                 "\n vehiculo            ='" + vehiculo +
                 "\n fecha               ='" + fecha +

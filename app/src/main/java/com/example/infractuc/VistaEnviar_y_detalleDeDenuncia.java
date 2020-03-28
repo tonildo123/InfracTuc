@@ -1,16 +1,20 @@
 package com.example.infractuc;
 
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +30,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -47,13 +53,7 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
     private ImageView confirmo_contexto;
     private Button confirmo_enviar_a_firebase;
 
-
     private DatabaseReference databaseReference;
-    private StorageReference storage;
-    StorageReference storageRef = storage.getStorage().getReference();
-    StorageReference InfracTucRefer = storageRef.child("infractuc.jpg");
-    StorageReference infracTucImagesRef = storageRef.child("images/infractuc.jpg");
-
 
     private String Base_de_Datos = "InfracTuc";
     String foto_de_el_contexto = null;
@@ -63,12 +63,7 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View vista =inflater.inflate(R.layout.fragment_vista_enviar_y_detalle_de_denuncia, container, false);
-        inicializarFirebase();
-        InfracTucRefer.getName().equals(infracTucImagesRef.getName());    // true
-        InfracTucRefer.getPath().equals(infracTucImagesRef.getPath());    // false
-
-
-
+         inicializarFirebase();
 
         confirmo_ubicacion = vista.findViewById(R.id.txt_confirmo_ubicacion);
         confirmo_petente = vista.findViewById(R.id.txt_confirmo_patente);
@@ -100,7 +95,6 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
 
             StringToBitMap(foto_de_el_contexto, confirmo_contexto);
 
-
         }
 
 
@@ -111,13 +105,12 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
                         confirmo_infraccion, confirmo_fecha, confirmo_vehiculo, confirmo_descripcion,foto_de_el_contexto);
             }
         });
-
         return vista;
     }
 
     private void EnviemosTodoAFirebase(TextView confirmo_petente, TextView confirmo_ubicacion,
                                        TextView confirmo_infraccion, TextView confirmo_fecha,
-                                       TextView confirmo_vehiculo, TextView confirmo_descripcion, String foto
+                                       TextView confirmo_vehiculo, TextView confirmo_descripcion, String contexto
                                        ) {
         String id_infraccion = UUID.randomUUID().toString();
         String patente = confirmo_petente.getText().toString();
@@ -136,20 +129,15 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         infra.setFecha(fecha);
         infra.setVehiculo(vehiculo);
         infra.setDescricion(descripcion);
+        infra.setContexto(contexto);
 
 
         databaseReference.child(Base_de_Datos).child(id_infraccion).setValue(infra);
         Toast.makeText(getApplicationContext(), "Se agrego infraccion con la patente " + patente +
                 " a nuestra base de datos", Toast.LENGTH_LONG).show();
-        subirFoto(foto);
+
         }
 
-    private void subirFoto(String foto) {
-        String PATH = foto;
-        File f = new File(PATH);
-        Uri yourUri = Uri.fromFile(f);
-
-    }
 
     public void StringToBitMap(String encodedString, ImageView confirmo_contexto) {
         // Incase you're storing into aws or other places where we have extension stored in the starting.
@@ -160,6 +148,7 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         Bitmap bitmap = BitmapFactory.decodeStream(stream);
         confirmo_contexto.setImageBitmap(bitmap);
 
+        //uploadFile(bitmap, null);
     }
 
     public void inicializarFirebase() {

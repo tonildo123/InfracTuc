@@ -13,8 +13,10 @@
     <string name="boton_login">Login</string>
     <string name="boton_salir">SALIR</string>
     <string name="boton_registrarme">Registrarme</string>
+    <string name="boton_buscar_patente">Buscar Datos!</string>
     <string name="hint_email">Ingrese Email</string>
     <string name="hint_password">**********</string>
+    <string name="hint_patente_buscar">Serie de la patente EJ: AA 123 BB</string>
     <string name="hint_dni">Ingrese DNI</string>
     <string name="hint_ubicacion">Ubicacion de la infraccion</string>
     <string name="hint_descripcion">Breve Descripcion EJ: MAL ESTACIONADO</string>

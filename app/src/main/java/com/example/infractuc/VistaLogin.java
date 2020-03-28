@@ -187,28 +187,6 @@ public class VistaLogin extends Fragment {
             }
         });
 
-        /*firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-            FirebaseUser user  = firebaseAuth.getCurrentUser();
-                if(user != null){
-                    ParaPasar(user);
-                } else {
-                    ParaPasar(null);
-                }
-
-            }
-        };
-
-        accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                if(currentAccessToken == null ){
-
-                    firebaseAuth.signOut();                }
-            }
-        };*/
-
     }
 
 
@@ -256,19 +234,16 @@ public class VistaLogin extends Fragment {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            //FirebaseUser user = firebaseAuth.getCurrentUser();
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
                             //b_facebook.setEnabled(true);
                             ParaPasar();
-
-                            //updateUI();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(getContext(), "Error al autentificar.",
                                     Toast.LENGTH_SHORT).show();
                             //b_facebook.setEnabled(true);
-                            //updateUI();
-                            //ParaPasar();
+                            ParaPasar();
                         }
 
                         // ...
@@ -336,9 +311,8 @@ public class VistaLogin extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Pass the activity result back to the Facebook SDK
-        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-
+        callbackManager.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == SIGN_IN_CODE_GOOGLE) {
