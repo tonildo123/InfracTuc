@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class AdaptadorDenuncias extends BaseAdapter {
 
-
+    VistaEnviar_y_detalleDeDenuncia vista = new VistaEnviar_y_detalleDeDenuncia();
     Context context;
     ArrayList<ModeloDenuncia> infraccioones;
     LayoutInflater inflater;
@@ -37,38 +37,29 @@ public class AdaptadorDenuncias extends BaseAdapter {
     public  long  getItemId(int posicion) {
         return posicion;
     }
-    public class Holder
-    {
-        TextView aqui_infraccion, aqui_vehiculo, aqui_patente, aqui_fecha, aqui_descripcion, aqui_lugar;
-        ImageView img;
-    }
+
     @Override
     public View getView(final int posicion, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
 
-        Holder holder=new Holder();
+        MiHolder holder=new MiHolder(convertView);
 
-        View fila;
+        convertView = inflater.inflate(R.layout.modelo_denuncia, parent, false);
 
-        fila = inflater.inflate(R.layout.modelo_denuncia, parent, false);
+        holder.aqui_infraccion .setText(infraccioones.get(posicion).getInfraccion());
+        holder.aqui_vehiculo   .setText(infraccioones.get(posicion).getVehiculo());
+        holder.aqui_patente    .setText(infraccioones.get(posicion).getPatente());
+        holder.aqui_fecha      .setText(infraccioones.get(posicion).getFecha());
+        holder.aqui_descripcion.setText(infraccioones.get(posicion).getDescripcion());
+        holder.aqui_lugar      .setText(infraccioones.get(posicion).getUbicacion());
+        vista.StringToBitMap(infraccioones.get(posicion).getContexto(),holder.img);
 
-        holder.aqui_infraccion  = fila.findViewById(R.id.aqui_infraccion);
-        holder.aqui_vehiculo    = fila.findViewById(R.id.aqui_vehiculo);
-        holder.aqui_patente     = fila.findViewById(R.id.aqui_patente);
-        holder.aqui_fecha       = fila.findViewById(R.id.aqui_fecha);
-        holder.aqui_descripcion = fila.findViewById(R.id.aqui_descripcion);
-        holder.aqui_lugar       = fila.findViewById(R.id.aqui_lugar);
-        holder.img              = fila.findViewById(R.id.aqui_imagen);
+        //ClaseConverter.StringTOBitmap(infraccioones.get(posicion).getContexto(),holder.img);
 
-        holder.img             .setImageBitmap(infraccioones.get(posicion).getImagen_del_contexto());
-        holder.aqui_infraccion .setText       (infraccioones.get(posicion).getInfraccion());
-        holder.aqui_vehiculo   .setText       (infraccioones.get(posicion).getVehiculo());
-        holder.aqui_patente    .setText       (infraccioones.get(posicion).getPatente());
-        holder.aqui_fecha      .setText       (infraccioones.get(posicion).getFecha());
-        holder.aqui_descripcion.setText       (infraccioones.get(posicion).getDescripcion());
-        holder.aqui_lugar      .setText       (infraccioones.get(posicion).getUbicacion());
-       // ConvertFormat.StringTOBitmap(infraccioones.get(posicion).getContexto(),holder.img);
-
-        return fila;
+        return convertView;
     }
+
+
+
+
 }

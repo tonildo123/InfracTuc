@@ -6,16 +6,16 @@ import android.widget.ImageView;
 public class ModeloDenuncia {
 
     private String infraccion, descripcion, patente, contexto, vehiculo, fecha, ubicacion, id_infraccion;
-    private Bitmap imagen_del_contexto;
+
 
     public ModeloDenuncia() {
 
     }
 
-    public ModeloDenuncia(Bitmap imagen_del_contexto, String infraccion, String descripcion,
+    public ModeloDenuncia(String infraccion, String descripcion,
                           String patente, String contexto, String vehiculo, String fecha,
                           String ubicacion,String id_infraccion) {
-        this.imagen_del_contexto= imagen_del_contexto;
+
         this.infraccion = infraccion;
         this.descripcion = descripcion;
         this.patente = patente;
@@ -35,14 +35,7 @@ public class ModeloDenuncia {
         this.descripcion = descripcion;
     }
 
-    public Bitmap getImagen_del_contexto() {
 
-        return imagen_del_contexto;
-    }
-
-    public void setImagen_del_contexto(Bitmap imagen_del_contexto) {
-        this.imagen_del_contexto = imagen_del_contexto;
-    }
 
     public String getInfraccion() {
         return infraccion;

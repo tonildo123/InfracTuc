@@ -89,16 +89,14 @@ public class VistaVerDenuncias extends Fragment {
 
                 for (DataSnapshot objSnaptshot : dataSnapshot.getChildren()){
                     ModeloDenuncia p = new ModeloDenuncia();
-                    Bitmap bitmap = StringtoBitmap(objSnaptshot.getValue(ModeloDenuncia.class).getContexto());
-                    //p.setImagen_del_contexto(objSnaptshot.getValue(ModeloDenuncia.class).getImagen_del_contexto());
-                    p.setImagen_del_contexto(bitmap);
+
+                    p.setContexto(objSnaptshot.getValue(ModeloDenuncia.class).getContexto());
                     p.setInfraccion(objSnaptshot.getValue(ModeloDenuncia.class).getInfraccion());
                     p.setDescripcion(objSnaptshot.getValue(ModeloDenuncia.class).getDescripcion());
                     p.setPatente(objSnaptshot.getValue(ModeloDenuncia.class).getPatente());
                     p.setVehiculo(objSnaptshot.getValue(ModeloDenuncia.class).getVehiculo());
                     p.setFecha(objSnaptshot.getValue(ModeloDenuncia.class).getFecha());
                     p.setUbicacion(objSnaptshot.getValue(ModeloDenuncia.class).getUbicacion());
-
 
                     campoConsulta.setText(objSnaptshot.getValue(ModeloDenuncia.class).getContexto());
 
@@ -126,19 +124,8 @@ public class VistaVerDenuncias extends Fragment {
 
     }
 
-
-
     public void inicializarFirebase() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
-    }
-
-    public Bitmap StringtoBitmap(String encodedString){
-
-        String imageDataBytes = encodedString.substring(encodedString.indexOf(",")+1);
-        InputStream stream = new ByteArrayInputStream(Base64.decode(imageDataBytes.getBytes(), Base64.DEFAULT));
-        Bitmap bitmap = BitmapFactory.decodeStream(stream);
-        //confirmo_contexto.setImageBitmap(bitmap);
-        return bitmap;
     }
 
 
