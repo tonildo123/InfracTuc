@@ -128,7 +128,7 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         infra.setInfraccion(infraccion);
         infra.setFecha(fecha);
         infra.setVehiculo(vehiculo);
-        infra.setDescricion(descripcion);
+        infra.setDescripcion(descripcion);
         infra.setContexto(contexto);
 
 

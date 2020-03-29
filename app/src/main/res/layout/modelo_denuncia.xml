@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.70"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/foto_del_contexto" />
+
+        <ImageView
+            android:id="@+id/aqui_imagen"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/description_photo"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            app:srcCompat="@drawable/fotodenunciavial" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.30"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.70"
+                android:orientation="vertical">
+                <TextView
+                android:id="@+id/infraccion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.60"
+                android:text="@string/texto_tipo_de_infraccion" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.30"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/aqui_infraccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/description_photo" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.70"
+                android:orientation="vertical">
+                <TextView
+                android:id="@+id/descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.60"
+                android:text="@string/texto_descripcion" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.30"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/aqui_descripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/description_photo" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.70"
+                android:orientation="vertical">
+                <TextView
+                android:id="@+id/patente"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:text="@string/texto_patente" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.30"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/aqui_patente"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/description_photo" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.70"
+                android:orientation="vertical">
+                <TextView
+                android:id="@+id/vehiculo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.60"
+                android:text="@string/texto_vehiculo" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.30"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/aqui_vehiculo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/description_photo" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.70"
+                android:orientation="vertical">
+                <TextView
+                android:id="@+id/fecha_y_hora"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.60"
+                android:text="@string/texto_fecha_y_hora" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.30"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/aqui_fecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/description_photo" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.70"
+                android:orientation="vertical">
+                <TextView
+                android:id="@+id/lugar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.60"
+                android:text="@string/texto_ubicacion" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.30"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/aqui_lugar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/description_photo" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
