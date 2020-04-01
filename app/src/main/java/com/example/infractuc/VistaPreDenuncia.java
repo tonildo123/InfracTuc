@@ -4,6 +4,8 @@ package com.example.infractuc;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,6 +30,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,8 +40,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,10 +57,12 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.app.Activity.RESULT_OK;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 /**
@@ -75,12 +88,12 @@ public class VistaPreDenuncia extends Fragment {
     private final int CODE_PHOTO = 200;
     private final int SELECT_PICTURE = 300;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View vista =  inflater.inflate(R.layout.fragment_vista_pre_denuncia, container, false);
+
         spiner_vehiculo = vista.findViewById(R.id.spinner);
         spinnr_infraccion = vista.findViewById(R.id.spinner2);
         b_siguiente = vista.findViewById(R.id.boton_continuar);
@@ -120,7 +133,7 @@ public class VistaPreDenuncia extends Fragment {
             @Override
             public void onClick(View view) {
 
-
+                String id_infraccion = UUID.randomUUID().toString();
                 String descripcion_a_enviar =  txt_descripcion.getText().toString();
                 String ubicacion_a_enviar = txt_ubicacion.getText().toString();
                 String infraccion_a_enviar = spinnr_infraccion.getSelectedItem().toString();
@@ -135,11 +148,8 @@ public class VistaPreDenuncia extends Fragment {
                 String imagen_en_bitmap = BitMapToString();
 
 
-                DatosAEnviarADenuncia(descripcion_a_enviar, ubicacion_a_enviar, infraccion_a_enviar,vehiculo_a_enviar, hora, fecha, patente_a_enviar, imagen_en_bitmap );
+                DatosAEnviarADenuncia(id_infraccion, descripcion_a_enviar, ubicacion_a_enviar, infraccion_a_enviar,vehiculo_a_enviar, hora, fecha, patente_a_enviar, imagen_en_bitmap );
             }});
-
-
-
 
 
 
@@ -198,7 +208,7 @@ public class VistaPreDenuncia extends Fragment {
 
     public void TomarFotoDeGaleria() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                   android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, SELECT_PICTURE);
     }
@@ -224,9 +234,10 @@ public class VistaPreDenuncia extends Fragment {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
             String autorizado = getActivity().getPackageName() + ".provider";
-            Uri uri_imagen = FileProvider.getUriForFile (getContext(), autorizado, new_file);
-
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri_imagen);
+            //Uri uri_imagen = FileProvider.getUriForFile (getContext(), autorizado, new_file);
+            //intent.putExtra(MediaStore.EXTRA_OUTPUT, uri_imagen);
+               Uri imguri = FileProvider.getUriForFile (getContext(), autorizado, new_file);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imguri);
             }else
             {
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new_file));
@@ -249,45 +260,23 @@ public class VistaPreDenuncia extends Fragment {
         if (resultCode == RESULT_OK) {
             switch(requestCode){
                 case CODE_PHOTO:
-
-                    MediaScannerConnection.scanFile(getContext(), new String[]{phat}, null, new MediaScannerConnection.OnScanCompletedListener() {
+                    MediaScannerConnection.scanFile(getContext(), new String[]{phat},
+                            null, new MediaScannerConnection.OnScanCompletedListener() {
                         @Override
                         public void onScanCompleted(String s, Uri uri) {
 
                         }
                     });
                     Bitmap bitmap =  BitmapFactory.decodeFile(phat);
-
-                    ExifInterface exif = null;
-                    try {
-                        exif = new ExifInterface(phat);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-
-                    Matrix matrix = new Matrix();
-                    switch (orientation) {
-                        case ExifInterface.ORIENTATION_ROTATE_90:
-                            matrix.postRotate(90);
-                            break;
-                        case ExifInterface.ORIENTATION_ROTATE_180:
-                            matrix.postRotate(180);
-                            break;
-                        case ExifInterface.ORIENTATION_ROTATE_270:
-                            matrix.postRotate(270);
-                            break;
-                        default:
-                            break;
-                    }
                     imagen_contexto.setImageBitmap(bitmap);
                     break;
 
                 case SELECT_PICTURE:
                     if (data != null) {
-                       // Uri imageUri = data.getData();
-                        // imagen_contexto.setImageURI(imageUri);
-                        imagen_contexto.setImageBitmap((Bitmap)data.getExtras().get("data"));
+                        //imagen_contexto.setImageBitmap((Bitmap)data.getExtras().get("data"));
+                        Uri imguri = data.getData();
+                        imagen_contexto.setImageURI(imguri);
+
                     }
                     break;
             }
@@ -301,7 +290,6 @@ public class VistaPreDenuncia extends Fragment {
     public String BitMapToString(){
 
         Bitmap bitmap = BitmapFactory.decodeFile(phat);
-
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         // In case you want to compress your image, here it's at 40%
         bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
@@ -316,12 +304,13 @@ public class VistaPreDenuncia extends Fragment {
 
 // BOTON SIGUIENTE para enviar denuncia
 
-    public void DatosAEnviarADenuncia(String descripcion_a_enviar, String ubicacion_a_enviar, String infraccion_a_enviar, String vehiculo_a_enviar, String hora, String fecha, String patente , String foto_contexto) {
+    public void DatosAEnviarADenuncia(String id_infraccion, String descripcion_a_enviar, String ubicacion_a_enviar, String infraccion_a_enviar, String vehiculo_a_enviar, String hora, String fecha, String patente , String foto_contexto) {
 
 
 
         Bundle enviar = new Bundle();
 
+        enviar.putString("ID_INFRACCION",id_infraccion);
         enviar.putString("Descripcion",descripcion_a_enviar);
         enviar.putString("Lugar",ubicacion_a_enviar);
         enviar.putString("Infraccion",infraccion_a_enviar);
@@ -339,11 +328,6 @@ public class VistaPreDenuncia extends Fragment {
     }
 
 // gestion de botones en Vista pre denuncia
-
-
-
-
-
 
 // para patente y permisos
 // Para BOTON PATENTE
@@ -438,6 +422,19 @@ public void OpcionesDelBotonPatente() {
             showExplanation();
         }
     }
+
+    // Para guardar la imagen en firebase
+
+    public String getImageExt(Uri uri) {
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+
+
+
+
 
 
 }

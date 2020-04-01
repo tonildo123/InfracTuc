@@ -11,7 +11,7 @@ public class MiHolder {
     public  MiHolder(View itemView)
     {
         aqui_infraccion  = itemView.findViewById(R.id.aqui_infraccion);
-        aqui_vehiculo    = itemView. findViewById(R.id.aqui_vehiculo);
+        aqui_vehiculo    = itemView.findViewById(R.id.aqui_vehiculo);
         aqui_patente     = itemView.findViewById(R.id.aqui_patente);
         aqui_fecha       = itemView.findViewById(R.id.aqui_fecha);
         aqui_descripcion = itemView.findViewById(R.id.aqui_descripcion);
@@ -19,6 +19,8 @@ public class MiHolder {
         img              = itemView.findViewById(R.id.aqui_imagen);
 
     }
+
+
 
 
 }

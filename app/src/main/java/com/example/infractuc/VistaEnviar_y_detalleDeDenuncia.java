@@ -39,6 +39,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.UUID;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -52,11 +53,21 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
     private TextView confirmo_petente, confirmo_ubicacion, confirmo_infraccion, confirmo_fecha, confirmo_vehiculo, confirmo_descripcion;
     private ImageView confirmo_contexto;
     private Button confirmo_enviar_a_firebase;
+    private String id_infraccion=null;
 
     private DatabaseReference databaseReference;
 
     private String Base_de_Datos = "InfracTuc";
     String foto_de_el_contexto = null;
+
+
+    // para subr imagen a firebase
+    private StorageReference storageReference;
+    private Uri imguri;
+    public static final String FB_Storage_Path = "image/";
+    public static final String FB_Database_Path = "image";
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,6 +75,9 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         // Inflate the layout for this fragment
         View vista =inflater.inflate(R.layout.fragment_vista_enviar_y_detalle_de_denuncia, container, false);
          inicializarFirebase();
+        inicializarFirebaseStorage();
+
+
 
         confirmo_ubicacion = vista.findViewById(R.id.txt_confirmo_ubicacion);
         confirmo_petente = vista.findViewById(R.id.txt_confirmo_patente);
@@ -76,6 +90,7 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
 
         Bundle data = this.getArguments();
         if(data != null){
+            String id_infraccion_string = data.getString("ID_INFRACCION");
             String ubicacion = data.getString("Lugar");
             String vehiculo = data.getString("Vehiculo");
             String hora = data.getString("Hora");
@@ -85,7 +100,7 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
             String descripcion = data.getString("Descripcion");
             foto_de_el_contexto = data.getString("FotoContexto");
 
-
+            id_infraccion = id_infraccion_string;
             confirmo_descripcion.setText(descripcion);
             confirmo_infraccion.setText(infraccion);
             confirmo_vehiculo.setText(vehiculo);
@@ -101,18 +116,24 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         confirmo_enviar_a_firebase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EnviemosTodoAFirebase(confirmo_petente, confirmo_ubicacion,
+
+                EnviemosTodoAFirebase(id_infraccion,confirmo_petente, confirmo_ubicacion,
                         confirmo_infraccion, confirmo_fecha, confirmo_vehiculo, confirmo_descripcion,foto_de_el_contexto);
             }
         });
         return vista;
     }
 
-    private void EnviemosTodoAFirebase(TextView confirmo_petente, TextView confirmo_ubicacion,
+    public void inicializarFirebaseStorage() {
+        storageReference = FirebaseStorage.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference(FB_Database_Path);
+    }
+
+    private void EnviemosTodoAFirebase(String confirmo_id_infraccion, TextView confirmo_petente, TextView confirmo_ubicacion,
                                        TextView confirmo_infraccion, TextView confirmo_fecha,
                                        TextView confirmo_vehiculo, TextView confirmo_descripcion, String contexto
                                        ) {
-        String id_infraccion = UUID.randomUUID().toString();
+        String id_infraccion = confirmo_id_infraccion;
         String patente = confirmo_petente.getText().toString();
         String ubicacion = confirmo_ubicacion.getText().toString();
         String infraccion = confirmo_infraccion.getText().toString();
@@ -131,12 +152,44 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         infra.setDescripcion(descripcion);
         infra.setContexto(contexto);
 
-
+        GuradarFotoEnFirebase(id_infraccion);
         databaseReference.child(Base_de_Datos).child(id_infraccion).setValue(infra);
         Toast.makeText(getApplicationContext(), "Se agrego infraccion con la patente " + patente +
                 " a nuestra base de datos", Toast.LENGTH_LONG).show();
 
+
         }
+
+    public  void GuradarFotoEnFirebase(final String dealId) {
+        final ProgressDialog dialog = new ProgressDialog(getContext());
+        dialog.setTitle("Cargando imagen!");
+        dialog.show();
+        StorageReference ref = storageReference.child(FB_Storage_Path + dealId );
+        confirmo_contexto.setDrawingCacheEnabled(true);
+        confirmo_contexto.buildDrawingCache();
+        Bitmap bitmap = confirmo_contexto.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = ref.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                dialog.dismiss();
+                Toast.makeText(getContext(), "Imagen cargada en firebase ", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+    }
+
 
 
     public void StringToBitMap(String encodedString, ImageView confirmo_contexto) {
@@ -147,6 +200,7 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
 
         Bitmap bitmap = BitmapFactory.decodeStream(stream);
         confirmo_contexto.setImageBitmap(bitmap);
+//        GuradarFotoEnFirebase(bitmap, null);
 
         //uploadFile(bitmap, null);
     }

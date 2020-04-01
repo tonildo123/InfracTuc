@@ -42,6 +42,8 @@ public class AdaptadorDenuncias extends BaseAdapter {
     public View getView(final int posicion, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
 
+        //if(){}
+
         MiHolder holder=new MiHolder(convertView);
 
         convertView = inflater.inflate(R.layout.modelo_denuncia, parent, false);
@@ -52,7 +54,8 @@ public class AdaptadorDenuncias extends BaseAdapter {
         holder.aqui_fecha      .setText(infraccioones.get(posicion).getFecha());
         holder.aqui_descripcion.setText(infraccioones.get(posicion).getDescripcion());
         holder.aqui_lugar      .setText(infraccioones.get(posicion).getUbicacion());
-        vista.StringToBitMap(infraccioones.get(posicion).getContexto(),holder.img);
+        //vista.StringToBitMap(infraccioones.get(posicion).getContexto(),holder.img);
+
 
         //ClaseConverter.StringTOBitmap(infraccioones.get(posicion).getContexto(),holder.img);
 

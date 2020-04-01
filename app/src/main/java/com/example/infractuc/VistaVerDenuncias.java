@@ -104,9 +104,9 @@ public class VistaVerDenuncias extends Fragment {
                     clase_adapatador_denuncias = new AdaptadorDenuncias(getContext(), lista_de_denuncias);
                     //arrayAdapterDenuncia = new ArrayAdapter<ModeloDenuncia>(getContext(),lista_de_denuncias);
                     list_denunciass.setAdapter((ListAdapter) clase_adapatador_denuncias);
-                    progressDialog.dismiss();
-                }
 
+                }
+                progressDialog.dismiss();
                 Toast.makeText(getActivity(),
                         "Listado Actualizado", Toast.LENGTH_LONG).show();
 
