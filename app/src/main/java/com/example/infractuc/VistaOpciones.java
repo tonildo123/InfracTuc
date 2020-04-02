@@ -110,17 +110,6 @@ public class VistaOpciones extends Fragment {
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ic_contenedor, new VistaLogin())
                 .addToBackStack(null).commit();
 
-        // para salir por facebook
-        // FirebaseAuth.getInstance().signOut();
-
-        // para salir por google
-        /*mGoogleSignInClient.signOut().addOnCanceledListener(getActivity(), new OnCanceledListener() {
-            @Override
-            public void onCanceled() {
-                Toast.makeText(getContext(), "Hasta Pronto", Toast.LENGTH_SHORT).show();
-
-            }
-        });*/
 
     }
 

@@ -5,15 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 import java.util.ArrayList;
 
 public class AdaptadorDenuncias extends BaseAdapter {
 
-    VistaEnviar_y_detalleDeDenuncia vista = new VistaEnviar_y_detalleDeDenuncia();
     Context context;
     ArrayList<ModeloDenuncia> infraccioones;
     LayoutInflater inflater;
@@ -44,9 +41,18 @@ public class AdaptadorDenuncias extends BaseAdapter {
 
         //if(){}
 
+        if (inflater== null)
+        {
+            inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        } if(convertView==null)
+        {
+            convertView = inflater.inflate(R.layout.modelo_denuncia, parent, false);
+
+        }
+
+
         MiHolder holder=new MiHolder(convertView);
 
-        convertView = inflater.inflate(R.layout.modelo_denuncia, parent, false);
 
         holder.aqui_infraccion .setText(infraccioones.get(posicion).getInfraccion());
         holder.aqui_vehiculo   .setText(infraccioones.get(posicion).getVehiculo());
@@ -54,10 +60,8 @@ public class AdaptadorDenuncias extends BaseAdapter {
         holder.aqui_fecha      .setText(infraccioones.get(posicion).getFecha());
         holder.aqui_descripcion.setText(infraccioones.get(posicion).getDescripcion());
         holder.aqui_lugar      .setText(infraccioones.get(posicion).getUbicacion());
-        //vista.StringToBitMap(infraccioones.get(posicion).getContexto(),holder.img);
 
-
-        //ClaseConverter.StringTOBitmap(infraccioones.get(posicion).getContexto(),holder.img);
+        ClaseConverter.StringTOBitmap(context, infraccioones.get(posicion).getUrl_imagen(),holder.aqui_mi_imagen);
 
         return convertView;
     }

@@ -7,7 +7,7 @@ import android.widget.TextView;
 public class MiHolder {
 
     TextView aqui_infraccion, aqui_vehiculo, aqui_patente, aqui_fecha, aqui_descripcion, aqui_lugar;
-    ImageView img;
+    ImageView aqui_mi_imagen;
     public  MiHolder(View itemView)
     {
         aqui_infraccion  = itemView.findViewById(R.id.aqui_infraccion);
@@ -16,7 +16,7 @@ public class MiHolder {
         aqui_fecha       = itemView.findViewById(R.id.aqui_fecha);
         aqui_descripcion = itemView.findViewById(R.id.aqui_descripcion);
         aqui_lugar       = itemView.findViewById(R.id.aqui_lugar);
-        img              = itemView.findViewById(R.id.aqui_imagen);
+        aqui_mi_imagen   = itemView.findViewById(R.id.aqui_imagen);
 
     }
 

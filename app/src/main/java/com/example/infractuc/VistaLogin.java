@@ -75,13 +75,6 @@ public class VistaLogin extends Fragment {
         callbackManager = CallbackManager.Factory.create();
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        //boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-
-
-        //signInButtonFacebook =  vista.findViewById(R.id.login_button_facebook);
-
-
         b_facebook = vista.findViewById(R.id.boton_continuar_con_facebook);
         b_login =  vista.findViewById(R.id.boton_login);
         b_registrarme =  vista.findViewById(R.id.boton_registrarme);

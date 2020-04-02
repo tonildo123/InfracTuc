@@ -54,16 +54,18 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
     private ImageView confirmo_contexto;
     private Button confirmo_enviar_a_firebase;
     private String id_infraccion=null;
+    private ProgressDialog progressDialog;
+
+
 
     private DatabaseReference databaseReference;
-
     private String Base_de_Datos = "InfracTuc";
     String foto_de_el_contexto = null;
 
 
     // para subr imagen a firebase
     private StorageReference storageReference;
-    private Uri imguri;
+    private DatabaseReference databaseReference_storage;
     public static final String FB_Storage_Path = "image/";
     public static final String FB_Database_Path = "image";
 
@@ -74,9 +76,8 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View vista =inflater.inflate(R.layout.fragment_vista_enviar_y_detalle_de_denuncia, container, false);
-         inicializarFirebase();
+        inicializarFirebase();
         inicializarFirebaseStorage();
-
 
 
         confirmo_ubicacion = vista.findViewById(R.id.txt_confirmo_ubicacion);
@@ -87,6 +88,8 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         confirmo_fecha = vista.findViewById(R.id.txt_fecha_y_hora);
         confirmo_contexto = vista.findViewById(R.id.imagen_confirmo_denuncia);
         confirmo_enviar_a_firebase = vista.findViewById(R.id.button_confirmar_denuncia);
+        progressDialog = new ProgressDialog(getContext());
+
 
         Bundle data = this.getArguments();
         if(data != null){
@@ -113,25 +116,24 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         }
 
 
+
         confirmo_enviar_a_firebase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GuradarFotoEnFirebase(id_infraccion);
 
-                EnviemosTodoAFirebase(id_infraccion,confirmo_petente, confirmo_ubicacion,
-                        confirmo_infraccion, confirmo_fecha, confirmo_vehiculo, confirmo_descripcion,foto_de_el_contexto);
+
             }
         });
         return vista;
     }
 
-    public void inicializarFirebaseStorage() {
-        storageReference = FirebaseStorage.getInstance().getReference();
-        databaseReference = FirebaseDatabase.getInstance().getReference(FB_Database_Path);
-    }
+
 
     private void EnviemosTodoAFirebase(String confirmo_id_infraccion, TextView confirmo_petente, TextView confirmo_ubicacion,
                                        TextView confirmo_infraccion, TextView confirmo_fecha,
-                                       TextView confirmo_vehiculo, TextView confirmo_descripcion, String contexto
+                                       TextView confirmo_vehiculo, TextView confirmo_descripcion,
+                                       String contexto, String url_imagen_de_firebase
                                        ) {
         String id_infraccion = confirmo_id_infraccion;
         String patente = confirmo_petente.getText().toString();
@@ -151,8 +153,8 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         infra.setVehiculo(vehiculo);
         infra.setDescripcion(descripcion);
         infra.setContexto(contexto);
+        infra.setUrl_imagen(url_imagen_de_firebase);
 
-        GuradarFotoEnFirebase(id_infraccion);
         databaseReference.child(Base_de_Datos).child(id_infraccion).setValue(infra);
         Toast.makeText(getApplicationContext(), "Se agrego infraccion con la patente " + patente +
                 " a nuestra base de datos", Toast.LENGTH_LONG).show();
@@ -161,9 +163,8 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         }
 
     public  void GuradarFotoEnFirebase(final String dealId) {
-        final ProgressDialog dialog = new ProgressDialog(getContext());
-        dialog.setTitle("Cargando imagen!");
-        dialog.show();
+        progressDialog.setMessage("Cargando imagen...");
+        progressDialog.show();
         StorageReference ref = storageReference.child(FB_Storage_Path + dealId );
         confirmo_contexto.setDrawingCacheEnabled(true);
         confirmo_contexto.buildDrawingCache();
@@ -177,12 +178,21 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
+                Toast.makeText(getContext(), "Error al cargar imagen " +exception
+                        , Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                dialog.dismiss();
+                progressDialog.dismiss();
                 Toast.makeText(getContext(), "Imagen cargada en firebase ", Toast.LENGTH_SHORT).show();
+                Uri link_imagen = taskSnapshot.getUploadSessionUri();
+                String url_imagen = link_imagen.toString();
+                Toast.makeText(getContext(), "link de imagen :  "
+                        + url_imagen, Toast.LENGTH_SHORT).show();
+                EnviemosTodoAFirebase(id_infraccion,confirmo_petente, confirmo_ubicacion,
+                        confirmo_infraccion, confirmo_fecha, confirmo_vehiculo, confirmo_descripcion,foto_de_el_contexto, url_imagen);
+
 
             }
         });
@@ -200,14 +210,17 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
 
         Bitmap bitmap = BitmapFactory.decodeStream(stream);
         confirmo_contexto.setImageBitmap(bitmap);
-//        GuradarFotoEnFirebase(bitmap, null);
 
-        //uploadFile(bitmap, null);
     }
 
     public void inicializarFirebase() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
+    public void inicializarFirebaseStorage() {
+        storageReference = FirebaseStorage.getInstance().getReference();
+        databaseReference_storage = FirebaseDatabase.getInstance().getReference(FB_Database_Path);
+    }
+
 
 
 

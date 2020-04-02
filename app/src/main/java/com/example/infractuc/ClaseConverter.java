@@ -1,23 +1,30 @@
 package com.example.infractuc;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-import android.widget.ImageView;
+import android.annotation.SuppressLint;
+import android.content.Context;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+
 
 public class ClaseConverter {
 
 
-    public static void StringTOBitmap(String contexto, ImageView img) {
+    //@SuppressLint("ResourceType")
+    public static void StringTOBitmap(Context c, String ur_imagen, ImageView img) {
 
-        String imageDataBytes = contexto.substring(contexto.indexOf(",")+1);
+        if(ur_imagen !=null){
+            Glide.with(c)
+      //              .load(ur_imagen).placeholder(R.id.aqui_imagen)
+                    .load(ur_imagen)
+                    .into(img);
 
-        InputStream stream = new ByteArrayInputStream(Base64.decode(imageDataBytes.getBytes(), Base64.DEFAULT));
+        } else {
+            Toast.makeText(c,"ERROR", Toast.LENGTH_LONG).show();
+        }
 
-        Bitmap bitmap = BitmapFactory.decodeStream(stream);
-        img.setImageBitmap(bitmap);
+
     }
 }

@@ -1,11 +1,8 @@
 package com.example.infractuc;
 
-import android.graphics.Bitmap;
-import android.widget.ImageView;
-
 public class ModeloDenuncia {
 
-    private String infraccion, descripcion, patente, contexto, vehiculo, fecha, ubicacion, id_infraccion;
+    private String infraccion, descripcion, patente, contexto, vehiculo, fecha, ubicacion, id_infraccion, link_imagen_firebase;
 
 
     public ModeloDenuncia() {
@@ -14,7 +11,7 @@ public class ModeloDenuncia {
 
     public ModeloDenuncia(String infraccion, String descripcion,
                           String patente, String contexto, String vehiculo, String fecha,
-                          String ubicacion,String id_infraccion) {
+                          String ubicacion,String id_infraccion, String link_imagen_firebase) {
 
         this.infraccion = infraccion;
         this.descripcion = descripcion;
@@ -24,6 +21,7 @@ public class ModeloDenuncia {
         this.fecha = fecha;
         this.ubicacion = ubicacion;
         this.id_infraccion = id_infraccion;
+        this.link_imagen_firebase = link_imagen_firebase;
 
     }
 
@@ -97,12 +95,13 @@ public class ModeloDenuncia {
     }
 
 
+    public String getUrl_imagen() {
+        return link_imagen_firebase;
+    }
 
-
-
-
-
-
+    public void setUrl_imagen(String link_imagen_firebase) {
+        this.link_imagen_firebase = link_imagen_firebase;
+    }
 }
 
 

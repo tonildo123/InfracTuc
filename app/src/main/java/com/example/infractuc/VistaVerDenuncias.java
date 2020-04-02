@@ -90,20 +90,19 @@ public class VistaVerDenuncias extends Fragment {
                 for (DataSnapshot objSnaptshot : dataSnapshot.getChildren()){
                     ModeloDenuncia p = new ModeloDenuncia();
 
-                    p.setContexto(objSnaptshot.getValue(ModeloDenuncia.class).getContexto());
+
                     p.setInfraccion(objSnaptshot.getValue(ModeloDenuncia.class).getInfraccion());
                     p.setDescripcion(objSnaptshot.getValue(ModeloDenuncia.class).getDescripcion());
                     p.setPatente(objSnaptshot.getValue(ModeloDenuncia.class).getPatente());
                     p.setVehiculo(objSnaptshot.getValue(ModeloDenuncia.class).getVehiculo());
                     p.setFecha(objSnaptshot.getValue(ModeloDenuncia.class).getFecha());
                     p.setUbicacion(objSnaptshot.getValue(ModeloDenuncia.class).getUbicacion());
+                    p.setUrl_imagen(objSnaptshot.getValue(ModeloDenuncia.class).getUrl_imagen());
 
-                    campoConsulta.setText(objSnaptshot.getValue(ModeloDenuncia.class).getContexto());
 
                     lista_de_denuncias.add(p);
                     clase_adapatador_denuncias = new AdaptadorDenuncias(getContext(), lista_de_denuncias);
-                    //arrayAdapterDenuncia = new ArrayAdapter<ModeloDenuncia>(getContext(),lista_de_denuncias);
-                    list_denunciass.setAdapter((ListAdapter) clase_adapatador_denuncias);
+                    list_denunciass.setAdapter(clase_adapatador_denuncias);
 
                 }
                 progressDialog.dismiss();
