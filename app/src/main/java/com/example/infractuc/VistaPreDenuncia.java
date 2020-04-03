@@ -308,26 +308,28 @@ public class VistaPreDenuncia extends Fragment {
 
 
 
-        Bundle enviar = new Bundle();
 
-        enviar.putString("ID_INFRACCION",id_infraccion);
-        enviar.putString("Descripcion",descripcion_a_enviar);
-        enviar.putString("Lugar",ubicacion_a_enviar);
-        enviar.putString("Infraccion",infraccion_a_enviar);
-        enviar.putString("Vehiculo",vehiculo_a_enviar);
-        enviar.putString("Hora",hora);
-        enviar.putString("Fecha",fecha);
-        enviar.putString("Patente",patente);
-        enviar.putString("FotoContexto",foto_contexto);
+            Bundle enviar = new Bundle();
+
+            enviar.putString("ID_INFRACCION",id_infraccion);
+            enviar.putString("Descripcion",descripcion_a_enviar);
+            enviar.putString("Lugar",ubicacion_a_enviar);
+            enviar.putString("Infraccion",infraccion_a_enviar);
+            enviar.putString("Vehiculo",vehiculo_a_enviar);
+            enviar.putString("Hora",hora);
+            enviar.putString("Fecha",fecha);
+            enviar.putString("Patente",patente);
+            enviar.putString("FotoContexto",foto_contexto);
+
+            vistaEnviar_y_detalleDeDenuncia.setArguments(enviar);
+            getActivity().getSupportFragmentManager().beginTransaction().
+                    replace(R.id.ic_contenedor, vistaEnviar_y_detalleDeDenuncia).
+                    addToBackStack(null).commit();
 
 
-        vistaEnviar_y_detalleDeDenuncia.setArguments(enviar);
-        getActivity().getSupportFragmentManager().beginTransaction().
-                replace(R.id.ic_contenedor, vistaEnviar_y_detalleDeDenuncia).
-                addToBackStack(null).commit();
+
     }
 
-// gestion de botones en Vista pre denuncia
 
 // para patente y permisos
 // Para BOTON PATENTE
@@ -357,6 +359,9 @@ public void OpcionesDelBotonPatente() {
     private void TomarFotoDeGaleriaPatente() {
     }
 
+
+
+    // Gestion de permisos para ambos botones
     //GESTION DE PERMISOS
     public boolean mayRequestStoragePermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
@@ -422,19 +427,6 @@ public void OpcionesDelBotonPatente() {
             showExplanation();
         }
     }
-
-    // Para guardar la imagen en firebase
-
-    public String getImageExt(Uri uri) {
-        ContentResolver contentResolver = getActivity().getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-    }
-
-
-
-
-
 
 
 }

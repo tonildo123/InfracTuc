@@ -39,6 +39,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -56,20 +60,15 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
     private String id_infraccion=null;
     private ProgressDialog progressDialog;
 
-
-
     private DatabaseReference databaseReference;
     private String Base_de_Datos = "InfracTuc";
     String foto_de_el_contexto = null;
-
 
     // para subr imagen a firebase
     private StorageReference storageReference;
     private DatabaseReference databaseReference_storage;
     public static final String FB_Storage_Path = "image/";
     public static final String FB_Database_Path = "image";
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,7 +77,6 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         View vista =inflater.inflate(R.layout.fragment_vista_enviar_y_detalle_de_denuncia, container, false);
         inicializarFirebase();
         inicializarFirebaseStorage();
-
 
         confirmo_ubicacion = vista.findViewById(R.id.txt_confirmo_ubicacion);
         confirmo_petente = vista.findViewById(R.id.txt_confirmo_patente);
@@ -90,18 +88,17 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         confirmo_enviar_a_firebase = vista.findViewById(R.id.button_confirmar_denuncia);
         progressDialog = new ProgressDialog(getContext());
 
-
         Bundle data = this.getArguments();
         if(data != null){
             String id_infraccion_string = data.getString("ID_INFRACCION");
-            String ubicacion = data.getString("Lugar");
-            String vehiculo = data.getString("Vehiculo");
-            String hora = data.getString("Hora");
-            String fecha = data.getString("Fecha");
-            String infraccion = data.getString("Infraccion");
-            String matricula = data.getString("Patente");
-            String descripcion = data.getString("Descripcion");
-            foto_de_el_contexto = data.getString("FotoContexto");
+            String ubicacion            = data.getString("Lugar");
+            String vehiculo             = data.getString("Vehiculo");
+            String hora                 = data.getString("Hora");
+            String fecha                = data.getString("Fecha");
+            String infraccion           = data.getString("Infraccion");
+            String matricula            = data.getString("Patente");
+            String descripcion          = data.getString("Descripcion");
+            foto_de_el_contexto         = data.getString("FotoContexto");
 
             id_infraccion = id_infraccion_string;
             confirmo_descripcion.setText(descripcion);
@@ -111,17 +108,22 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
             confirmo_ubicacion.setText(ubicacion);
             confirmo_petente.setText(matricula);
 
-            StringToBitMap(foto_de_el_contexto, confirmo_contexto);
+            if(foto_de_el_contexto!=null){
+                StringToBitMap(foto_de_el_contexto, confirmo_contexto);
+            } else {
+                Toast.makeText(getContext(), "ERROR, Recuerde tomar foto del contexto y patente!"
+                        , Toast.LENGTH_SHORT).show();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.ic_contenedor, new VistaPreDenuncia()).commit();
+            }
+
+
 
         }
-
-
-
-        confirmo_enviar_a_firebase.setOnClickListener(new View.OnClickListener() {
+                confirmo_enviar_a_firebase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 GuradarFotoEnFirebase(id_infraccion);
-
 
             }
         });
@@ -129,12 +131,51 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
     }
 
 
+    public  void GuradarFotoEnFirebase(final String dealId) {
+        String id_nuevo = dealId.substring(0,7);
 
+        progressDialog.setMessage("Cargando imagen...");
+        progressDialog.show();
+        final StorageReference ref = storageReference.child(FB_Storage_Path + id_nuevo  );
+        confirmo_contexto.setDrawingCacheEnabled(true);
+        confirmo_contexto.buildDrawingCache();
+        Bitmap bitmap = confirmo_contexto.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        final UploadTask uploadTask = ref.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Toast.makeText(getContext(), "Error al cargar imagen " +exception
+                        , Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), "Imagen cargada exitosamente! ", Toast.LENGTH_SHORT).show();
+
+                String link_imagen = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+
+
+                Toast.makeText(getContext(), "link de imagen :  " + link_imagen, Toast.LENGTH_SHORT).show();
+                EnviemosTodoAFirebase(id_infraccion,confirmo_petente, confirmo_ubicacion,
+                            confirmo_infraccion, confirmo_fecha, confirmo_vehiculo, confirmo_descripcion,foto_de_el_contexto, link_imagen);
+
+
+            }
+        });
+    }
     private void EnviemosTodoAFirebase(String confirmo_id_infraccion, TextView confirmo_petente, TextView confirmo_ubicacion,
                                        TextView confirmo_infraccion, TextView confirmo_fecha,
                                        TextView confirmo_vehiculo, TextView confirmo_descripcion,
-                                       String contexto, String url_imagen_de_firebase
-                                       ) {
+                                       String contexto, String url_imagen_de_firebase            ) {
+
+        progressDialog.setMessage("Ahora Cargando Datos...");
+        progressDialog.show();
         String id_infraccion = confirmo_id_infraccion;
         String patente = confirmo_petente.getText().toString();
         String ubicacion = confirmo_ubicacion.getText().toString();
@@ -156,61 +197,17 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         infra.setUrl_imagen(url_imagen_de_firebase);
 
         databaseReference.child(Base_de_Datos).child(id_infraccion).setValue(infra);
+        progressDialog.dismiss();
         Toast.makeText(getApplicationContext(), "Se agrego infraccion con la patente " + patente +
                 " a nuestra base de datos", Toast.LENGTH_LONG).show();
-
-
-        }
-
-    public  void GuradarFotoEnFirebase(final String dealId) {
-        progressDialog.setMessage("Cargando imagen...");
-        progressDialog.show();
-        StorageReference ref = storageReference.child(FB_Storage_Path + dealId );
-        confirmo_contexto.setDrawingCacheEnabled(true);
-        confirmo_contexto.buildDrawingCache();
-        Bitmap bitmap = confirmo_contexto.getDrawingCache();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
-
-        UploadTask uploadTask = ref.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-                Toast.makeText(getContext(), "Error al cargar imagen " +exception
-                        , Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                progressDialog.dismiss();
-                Toast.makeText(getContext(), "Imagen cargada en firebase ", Toast.LENGTH_SHORT).show();
-                Uri link_imagen = taskSnapshot.getUploadSessionUri();
-                String url_imagen = link_imagen.toString();
-                Toast.makeText(getContext(), "link de imagen :  "
-                        + url_imagen, Toast.LENGTH_SHORT).show();
-                EnviemosTodoAFirebase(id_infraccion,confirmo_petente, confirmo_ubicacion,
-                        confirmo_infraccion, confirmo_fecha, confirmo_vehiculo, confirmo_descripcion,foto_de_el_contexto, url_imagen);
-
-
-            }
-        });
-
-
     }
 
-
-
     public void StringToBitMap(String encodedString, ImageView confirmo_contexto) {
-        // Incase you're storing into aws or other places where we have extension stored in the starting.
+        // convierto el string a bitmap y lo seteo en mi imagView
         String imageDataBytes = encodedString.substring(encodedString.indexOf(",")+1);
-
         InputStream stream = new ByteArrayInputStream(Base64.decode(imageDataBytes.getBytes(), Base64.DEFAULT));
-
         Bitmap bitmap = BitmapFactory.decodeStream(stream);
         confirmo_contexto.setImageBitmap(bitmap);
-
     }
 
     public void inicializarFirebase() {
@@ -220,8 +217,5 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         storageReference = FirebaseStorage.getInstance().getReference();
         databaseReference_storage = FirebaseDatabase.getInstance().getReference(FB_Database_Path);
     }
-
-
-
 
 }
