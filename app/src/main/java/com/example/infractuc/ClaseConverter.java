@@ -16,8 +16,9 @@ public class ClaseConverter {
     public static void StringTOBitmap(Context c, String ur_imagen, ImageView img) {
 
         if(ur_imagen !=null){
-            Glide.with(c)
-      //              .load(ur_imagen).placeholder(R.id.aqui_imagen)
+
+            // corroborar con libreria picasso
+                     Glide.with(c)
                     .load(ur_imagen)
                     .into(img);
 

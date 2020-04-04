@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.RemoteControlClient;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,6 +70,7 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
     private DatabaseReference databaseReference_storage;
     public static final String FB_Storage_Path = "image/";
     public static final String FB_Database_Path = "image";
+    String url_imagen=null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -117,7 +119,7 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
                         .replace(R.id.ic_contenedor, new VistaPreDenuncia()).commit();
             }
 
-
+// realizar una copia local
 
         }
                 confirmo_enviar_a_firebase.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +135,9 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
 
     public  void GuradarFotoEnFirebase(final String dealId) {
         String id_nuevo = dealId.substring(0,7);
+
+
+
 
         progressDialog.setMessage("Cargando imagen...");
         progressDialog.show();
@@ -154,25 +159,53 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
                 progressDialog.dismiss();
                 Toast.makeText(getContext(), "Imagen cargada exitosamente! ", Toast.LENGTH_SHORT).show();
 
-                String link_imagen = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-
-
-                Toast.makeText(getContext(), "link de imagen :  " + link_imagen, Toast.LENGTH_SHORT).show();
                 EnviemosTodoAFirebase(id_infraccion,confirmo_petente, confirmo_ubicacion,
-                            confirmo_infraccion, confirmo_fecha, confirmo_vehiculo, confirmo_descripcion,foto_de_el_contexto, link_imagen);
+                            confirmo_infraccion, confirmo_fecha, confirmo_vehiculo,
+                        confirmo_descripcion,foto_de_el_contexto, null);
 
+                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+
+                        // continuar con el task para obtener la url de descarga
+                        return ref.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            Uri downloadUri = task.getResult();
+                            String downloadURL = downloadUri.toString();
+
+                            databaseReference.child(Base_de_Datos).child(id_infraccion).child("url_imagen").setValue(downloadURL);
+                            //seteamos la url de la imagen en el database
+
+                        } else {
+                            // Manejo de errores
+                            Toast.makeText(getContext(), "Error al obtener url! ", Toast.LENGTH_SHORT).show();
+                            // ...
+                        }
+                    }
+                });
 
             }
         });
     }
+
+
+
     private void EnviemosTodoAFirebase(String confirmo_id_infraccion, TextView confirmo_petente, TextView confirmo_ubicacion,
                                        TextView confirmo_infraccion, TextView confirmo_fecha,
                                        TextView confirmo_vehiculo, TextView confirmo_descripcion,
-                                       String contexto, String url_imagen_de_firebase            ) {
+                                       String contexto, String url_imagen_de_firebase
+                                       ) {
 
         progressDialog.setMessage("Ahora Cargando Datos...");
         progressDialog.show();

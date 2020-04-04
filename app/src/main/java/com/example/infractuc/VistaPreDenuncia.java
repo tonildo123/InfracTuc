@@ -305,10 +305,6 @@ public class VistaPreDenuncia extends Fragment {
 // BOTON SIGUIENTE para enviar denuncia
 
     public void DatosAEnviarADenuncia(String id_infraccion, String descripcion_a_enviar, String ubicacion_a_enviar, String infraccion_a_enviar, String vehiculo_a_enviar, String hora, String fecha, String patente , String foto_contexto) {
-
-
-
-
             Bundle enviar = new Bundle();
 
             enviar.putString("ID_INFRACCION",id_infraccion);
@@ -325,9 +321,6 @@ public class VistaPreDenuncia extends Fragment {
             getActivity().getSupportFragmentManager().beginTransaction().
                     replace(R.id.ic_contenedor, vistaEnviar_y_detalleDeDenuncia).
                     addToBackStack(null).commit();
-
-
-
     }
 
 
