@@ -1,21 +1,16 @@
-package com.example.infractuc;
+package com.example.infractuc.Views;
 
 
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.RemoteControlClient;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.infractuc.Modelo.ModeloDenuncia;
+import com.example.infractuc.Persistencia.BbLocalInfractuc;
+import com.example.infractuc.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,20 +30,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.UUID;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -54,6 +44,8 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * A simple {@link Fragment} subclass.
  */
 public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
+
+    BbLocalInfractuc base_de_datos_local;
 
     private TextView confirmo_petente, confirmo_ubicacion, confirmo_infraccion, confirmo_fecha, confirmo_vehiculo, confirmo_descripcion;
     private ImageView confirmo_contexto;
@@ -70,7 +62,7 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
     private DatabaseReference databaseReference_storage;
     public static final String FB_Storage_Path = "image/";
     public static final String FB_Database_Path = "image";
-    String url_imagen=null;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,19 +101,8 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
             confirmo_fecha.setText(fecha + "   |  " +hora);
             confirmo_ubicacion.setText(ubicacion);
             confirmo_petente.setText(matricula);
-
-            if(foto_de_el_contexto!=null){
-                StringToBitMap(foto_de_el_contexto, confirmo_contexto);
-            } else {
-                Toast.makeText(getContext(), "ERROR, Recuerde tomar foto del contexto y patente!"
-                        , Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.ic_contenedor, new VistaPreDenuncia()).commit();
+            StringToBitMap(foto_de_el_contexto, confirmo_contexto);
             }
-
-// realizar una copia local
-
-        }
                 confirmo_enviar_a_firebase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,14 +112,12 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         });
         return vista;
     }
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////AQUI GUARDAMOS LA FOTO EN FIREBASE//////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public  void GuradarFotoEnFirebase(final String dealId) {
         String id_nuevo = dealId.substring(0,7);
-
-
-
-
         progressDialog.setMessage("Cargando imagen...");
         progressDialog.show();
         final StorageReference ref = storageReference.child(FB_Storage_Path + id_nuevo  );
@@ -146,7 +125,7 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         confirmo_contexto.buildDrawingCache();
         Bitmap bitmap = confirmo_contexto.getDrawingCache();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, baos);
         byte[] data = baos.toByteArray();
 
         final UploadTask uploadTask = ref.putBytes(data);
@@ -199,7 +178,9 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         });
     }
 
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////// GUARDAMOS URL DE IMAGEN Y DATOS EN DATABASE FIREBASE //////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void EnviemosTodoAFirebase(String confirmo_id_infraccion, TextView confirmo_petente, TextView confirmo_ubicacion,
                                        TextView confirmo_infraccion, TextView confirmo_fecha,
@@ -209,6 +190,7 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
 
         progressDialog.setMessage("Ahora Cargando Datos...");
         progressDialog.show();
+
         String id_infraccion = confirmo_id_infraccion;
         String patente = confirmo_petente.getText().toString();
         String ubicacion = confirmo_ubicacion.getText().toString();
@@ -216,7 +198,6 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         String fecha= confirmo_fecha.getText().toString();
         String vehiculo = confirmo_vehiculo.getText().toString();
         String descripcion = confirmo_descripcion.getText().toString();
-
 
         ModeloDenuncia infra = new ModeloDenuncia();
         infra.setId_infraccion(id_infraccion);
@@ -232,9 +213,11 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         databaseReference.child(Base_de_Datos).child(id_infraccion).setValue(infra);
         progressDialog.dismiss();
         Toast.makeText(getApplicationContext(), "Se agrego infraccion con la patente " + patente +
-                " a nuestra base de datos", Toast.LENGTH_LONG).show();
+                                                     " a nuestra base de datos", Toast.LENGTH_LONG).show();
     }
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////// CONVERTIMOS LA CADENA EN BITMAP///////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     public void StringToBitMap(String encodedString, ImageView confirmo_contexto) {
         // convierto el string a bitmap y lo seteo en mi imagView
         String imageDataBytes = encodedString.substring(encodedString.indexOf(",")+1);
@@ -242,6 +225,10 @@ public class VistaEnviar_y_detalleDeDenuncia extends Fragment {
         Bitmap bitmap = BitmapFactory.decodeStream(stream);
         confirmo_contexto.setImageBitmap(bitmap);
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////// LLAMAMOS A LAS INSTANCIAS DE BASE DE DATOS DE FIREBASE ///////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void inicializarFirebase() {
         databaseReference = FirebaseDatabase.getInstance().getReference();

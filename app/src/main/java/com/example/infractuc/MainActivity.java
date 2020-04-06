@@ -5,6 +5,8 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
+import com.example.infractuc.Views.VistaLogin;
+
 public class MainActivity extends AppCompatActivity {
 
     VistaLogin login = new VistaLogin();

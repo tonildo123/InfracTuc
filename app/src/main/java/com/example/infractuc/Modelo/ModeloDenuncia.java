@@ -1,4 +1,4 @@
-package com.example.infractuc;
+package com.example.infractuc.Modelo;
 
 public class ModeloDenuncia {
 

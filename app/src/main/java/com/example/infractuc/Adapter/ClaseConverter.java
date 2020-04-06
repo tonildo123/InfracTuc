@@ -1,4 +1,4 @@
-package com.example.infractuc;
+package com.example.infractuc.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,8 +16,6 @@ public class ClaseConverter {
     public static void StringTOBitmap(Context c, String ur_imagen, ImageView img) {
 
         if(ur_imagen !=null){
-
-            // corroborar con libreria picasso
                      Glide.with(c)
                     .load(ur_imagen)
                     .into(img);

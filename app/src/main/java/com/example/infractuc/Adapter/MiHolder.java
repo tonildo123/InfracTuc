@@ -1,8 +1,10 @@
-package com.example.infractuc;
+package com.example.infractuc.Adapter;
 
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.infractuc.R;
 
 public class MiHolder {
 

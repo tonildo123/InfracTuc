@@ -1,4 +1,4 @@
-package com.example.infractuc;
+package com.example.infractuc.Views;
 
 
 import android.app.ProgressDialog;
@@ -17,6 +17,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.infractuc.Adapter.AdaptadorDenuncias;
+import com.example.infractuc.Modelo.ModeloDenuncia;
+import com.example.infractuc.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -72,6 +75,10 @@ public class VistaVerDenuncias extends Fragment {
         return vista;
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////// ADMINISTRAR DENUNCIAS MODULO ADMINISTRADOR ////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
     private void SolcitarDatosFirebase() {// solo para mostrar datos en lista NO imagenes
         databaseReference.child(Base_de_Datos).addValueEventListener(new ValueEventListener() {
 
@@ -105,6 +112,11 @@ public class VistaVerDenuncias extends Fragment {
         });
 
     }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////// ADMINISTRAR DENUNCIAS MODULO USUARIO FINAL ////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 
     public void solicitarDatosFirebase(){
         progressDialog.setMessage("Cargando contenido...");

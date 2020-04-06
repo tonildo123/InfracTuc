@@ -1,4 +1,4 @@
-package com.example.infractuc;
+package com.example.infractuc.Views;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,16 +8,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.infractuc.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -82,6 +81,9 @@ public class VistaOpciones extends Fragment {
         });
         return vista;
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////// MENU DE BOTONES CON UN SWITCH /////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 
     public void MenuDEBotones(int botones) {
 
@@ -97,6 +99,9 @@ public class VistaOpciones extends Fragment {
                 break;
         }
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////// ADMINISTRAR VISTAS  //////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
     public void LlamarAPredenuncia() {
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ic_contenedor,
                 new VistaPreDenuncia()).addToBackStack(null).commit();
