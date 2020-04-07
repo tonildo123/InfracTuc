@@ -575,45 +575,22 @@ public void OpcionesDelBotonPatente() {
             for (int i = 0; i < items.size(); i++) {
                 TextBlock item = items.valueAt(i);
                 strBuilder.append(item.getValue());
-                strBuilder.append("/");
+                strBuilder.append(" ");
 
             }
-            String remove = "REPUBLICA ARGENTINA";
-            texto_patente.setText(strBuilder.toString().substring(0, strBuilder.toString().length() - 0));
+
+
+            String replace_text = strBuilder.toString().substring(0, strBuilder.toString().length() - 0);
+            String texto_mercosur="MERCOSUR";
+            String texto_argentina="ARGENTINA";
+            String texto_republica_argentina="REPUBLICA ARGENTINA";
+
+            String remove=null;
+
+            remove = replace_text.replace(texto_republica_argentina, "");
+            texto_patente.setText(remove);
         }
-
     }
-
-
 }
 
 /// API KAY de Google AIzaSyAWCk8_kyKvR20Np7IYYr5hHRsBC0GrN0M
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////    CODIGO DE REPOSITORIO  ///////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-* imagen_patente.setDrawingCacheEnabled(true);
-        imagen_patente.buildDrawingCache();
-        Bitmap bitmap =  imagen_patente.getDrawingCache();
-
-        TextRecognizer reconocer_texto = new TextRecognizer.Builder(getApplicationContext()).build();
-        if(reconocer_texto.isOperational()){
-            Toast.makeText(getContext(), "Error al reconocer texto", Toast.LENGTH_SHORT).show();
-        }
-        else {
-             Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-            SparseArray<TextBlock> items = reconocer_texto.detect(frame);
-            StringBuilder sb = new StringBuilder();
-
-            for (int i=0; i<items.size(); i++){
-                TextBlock my_item = items.valueAt(i);
-                sb.append(my_item.getValue());
-
-            }
-            texto_patente.setText(sb.toString());
-
-        }
-
-*
-* */
