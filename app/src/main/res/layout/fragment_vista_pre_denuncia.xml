@@ -177,7 +177,9 @@
             android:id="@+id/campo_patente_setear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

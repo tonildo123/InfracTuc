@@ -31,6 +31,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -50,6 +51,7 @@ import com.example.infractuc.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.text.Text;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.android.material.snackbar.Snackbar;
@@ -382,7 +384,8 @@ public void OpcionesDelBotonPatente() {
                 });
         bitmap_patente =  BitmapFactory.decodeFile(phat);
         imagen_patente.setImageBitmap(bitmap_patente);
-        PasarDeImagenaString();
+        //PasarDeImagenaString();
+        ReconocedorDeTextoSecundario();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -492,7 +495,9 @@ public void OpcionesDelBotonPatente() {
                         //Uri imguri_patente = data.getData();
                         bitmap_patente = (Bitmap) extras.get("data");
                         imagen_patente.setImageBitmap(bitmap_patente);
-                        PasarDeImagenaString();}
+                        //PasarDeImagenaString();
+                        ReconocedorDeTextoSecundario();
+                    }
 
                     break;
             }
@@ -550,14 +555,39 @@ public void OpcionesDelBotonPatente() {
 
         for(FirebaseVisionText.TextBlock block : firebaseVisionText.getTextBlocks() ){
             String texto = block.getText();
+            texto_patente.setTextSize(20);
             texto_patente.setText(texto);
         }}
 
     }
 
+    public void ReconocedorDeTextoSecundario(){
+
+        // Iniciando Text Recognizer
+
+        TextRecognizer txtRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
+        if (!txtRecognizer.isOperational()) {
+            texto_patente.setText("sin reconocer patente");
+        } else {
+            Frame frame = new Frame.Builder().setBitmap(bitmap_patente).build();
+            SparseArray<TextBlock> items = txtRecognizer.detect(frame);
+            StringBuilder strBuilder = new StringBuilder();
+            for (int i = 0; i < items.size(); i++) {
+                TextBlock item = items.valueAt(i);
+                strBuilder.append(item.getValue());
+                strBuilder.append("/");
+
+            }
+            String remove = "REPUBLICA ARGENTINA";
+            texto_patente.setText(strBuilder.toString().substring(0, strBuilder.toString().length() - 0));
+        }
+
+    }
+
+
 }
 
-
+/// API KAY de Google AIzaSyAWCk8_kyKvR20Np7IYYr5hHRsBC0GrN0M
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////    CODIGO DE REPOSITORIO  ///////////////////////////////////
