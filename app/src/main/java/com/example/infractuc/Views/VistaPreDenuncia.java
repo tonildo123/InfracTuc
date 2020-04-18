@@ -12,8 +12,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
+import android.media.ExifInterface;
 import android.media.Image;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -92,7 +94,6 @@ public class VistaPreDenuncia extends Fragment {
     private static String RUTA_IMAGEN = CARPETA_RAIZ + CARPETA_de_IMAGENES;
     private String phat;
 
-
     private Spinner spiner_vehiculo, spinnr_infraccion;
     private Button b_siguiente, b_capture_context,b_capture_patente;
     private EditText txt_ubicacion,txt_descripcion;
@@ -102,12 +103,9 @@ public class VistaPreDenuncia extends Fragment {
     private final int CODE_PHOTO = 200;
     private final int SELECT_PICTURE = 300;
 
-
     private final int CODE_PHOTO_PATENTE = 400;
     private final int SELECT_PICTURE_PATENTE = 500;
     private  Bitmap bitmap_patente;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -126,6 +124,7 @@ public class VistaPreDenuncia extends Fragment {
         texto_patente =  vista.findViewById(R.id.campo_patente_setear);
 
         b_capture_context = vista.findViewById(R.id.boton_foto_del_contexto);
+        texto_patente.setText("Nro°  de Serie  de Patente");
 
         if(mayRequestStoragePermission()){
             b_capture_patente.setEnabled(true);
@@ -192,8 +191,6 @@ public class VistaPreDenuncia extends Fragment {
         }
     }
 
-
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////  mETODOS PARA EL BOTON CONTEXTO ////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -246,8 +243,7 @@ public class VistaPreDenuncia extends Fragment {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
             String autorizado = getActivity().getPackageName() + ".provider";
-            //Uri uri_imagen = FileProvider.getUriForFile (getContext(), autorizado, new_file);
-            //intent.putExtra(MediaStore.EXTRA_OUTPUT, uri_imagen);
+
                Uri imguri = FileProvider.getUriForFile (getContext(), autorizado, new_file);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imguri);
             }else
@@ -284,8 +280,6 @@ public class VistaPreDenuncia extends Fragment {
             DatosAEnviarADenuncia(id_infraccion, descripcion_a_enviar, ubicacion_a_enviar,
                     infraccion_a_enviar,vehiculo_a_enviar, hora, fecha, patente_a_enviar, imagen_en_bitmap );
         }
-
-
     }
 
     public void DatosAEnviarADenuncia(String id_infraccion, String descripcion_a_enviar, String ubicacion_a_enviar,
@@ -309,7 +303,6 @@ public class VistaPreDenuncia extends Fragment {
                     replace(R.id.ic_contenedor, vistaEnviar_y_detalleDeDenuncia).
                     addToBackStack(null).commit();
     }
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////7/////////////////////  METODOS PARA EL BOTON PATENTE //////////////////////////////////////
@@ -384,7 +377,8 @@ public void OpcionesDelBotonPatente() {
                 });
         bitmap_patente =  BitmapFactory.decodeFile(phat);
         imagen_patente.setImageBitmap(bitmap_patente);
-        //PasarDeImagenaString();
+
+
         ReconocedorDeTextoSecundario();
     }
 
@@ -462,6 +456,7 @@ public void OpcionesDelBotonPatente() {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        final int angulo =  90;
 
         if (resultCode == RESULT_OK) {
             switch(requestCode){
@@ -472,17 +467,20 @@ public void OpcionesDelBotonPatente() {
                                 public void onScanCompleted(String s, Uri uri) {}
                             });
                     Bitmap bitmap =  BitmapFactory.decodeFile(phat);
-                    //Bitmap imageScaled = Bitmap.createScaledBitmap(bitmap, 300, 200, false);
                     imagen_contexto.setImageBitmap(bitmap);
+                    imagen_contexto.setRotation(angulo);
+
                     break;
 
                 case SELECT_PICTURE:
                     if (data != null) {
-                        //imagen_contexto.setImageBitmap((Bitmap)data.getExtras().get("data"));
+
                         Bundle extras = data.getExtras();
-                        //Uri imguri_patente = data.getData();
                         Bitmap imguri_contexto = (Bitmap) extras.get("data");
-                        imagen_contexto.setImageBitmap(imguri_contexto);  }
+                        imagen_contexto.setImageBitmap(imguri_contexto);
+                        imagen_contexto.setRotation(angulo);
+                        }
+
                     break;
                 case CODE_PHOTO_PATENTE:
                     MetodoPatente();
@@ -490,12 +488,10 @@ public void OpcionesDelBotonPatente() {
 
                 case SELECT_PICTURE_PATENTE:
                     if (data != null) {
-                        //imagen_contexto.setImageBitmap((Bitmap)data.getExtras().get("data"));
+
                         Bundle extras = data.getExtras();
-                        //Uri imguri_patente = data.getData();
                         bitmap_patente = (Bitmap) extras.get("data");
                         imagen_patente.setImageBitmap(bitmap_patente);
-                        //PasarDeImagenaString();
                         ReconocedorDeTextoSecundario();
                     }
 
@@ -526,44 +522,9 @@ public void OpcionesDelBotonPatente() {
     //////////////////  METODOS PARA EL RECONOCIMIENTOS DE IMAGENES ////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void PasarDeImagenaString(){
-    FirebaseVisionImage firebaseVisionImage =  FirebaseVisionImage.fromBitmap(bitmap_patente);
-    FirebaseVisionTextRecognizer firebaseVisionTextRecognizer = FirebaseVision.getInstance().getCloudTextRecognizer();
-    firebaseVisionTextRecognizer.processImage(firebaseVisionImage).addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
-        @Override
-        public void onSuccess(FirebaseVisionText firebaseVisionText) {
-
-        MostrarTextoDELaImagen(firebaseVisionText);
-        texto_patente.setText("");
-
-        }
-    }).addOnFailureListener(new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
-            Toast.makeText(getContext(), "Error al reconocer patente!!! \n " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    });
-
-    }
-
-    private void MostrarTextoDELaImagen(FirebaseVisionText firebaseVisionText) {
-    List<FirebaseVisionText.TextBlock> block_list = firebaseVisionText.getTextBlocks();
-
-    if(block_list.size() == 0){
-        Toast.makeText(getContext(), "Debe tomar una foto de patente!!! " , Toast.LENGTH_SHORT).show();
-    } else {
-
-        for(FirebaseVisionText.TextBlock block : firebaseVisionText.getTextBlocks() ){
-            String texto = block.getText();
-            texto_patente.setTextSize(20);
-            texto_patente.setText(texto);
-        }}
-
-    }
 
     public void ReconocedorDeTextoSecundario(){
 
-        // Iniciando Text Recognizer
 
         TextRecognizer txtRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
         if (!txtRecognizer.isOperational()) {
@@ -579,18 +540,33 @@ public void OpcionesDelBotonPatente() {
 
             }
 
-
             String replace_text = strBuilder.toString().substring(0, strBuilder.toString().length() - 0);
-            String texto_mercosur="MERCOSUR";
-            String texto_argentina="ARGENTINA";
-            String texto_republica_argentina="REPUBLICA ARGENTINA";
+            String[] texto = new String[4];
+            texto[0]="MERCOSUR";
+            texto[1]="ARGENTINA";
+            texto[2]="REPUBLICA ARGENTINA";
+            texto[3]="TUCUMAN";
+/// API KAY de Google AIzaSyAWCk8_kyKvR20Np7IYYr5hHRsBC0GrN0M
+            for (int i=0; i<texto.length; i++){
 
-            String remove=null;
+                if (replace_text.contains(texto[i])==true) {
 
-            remove = replace_text.replace(texto_republica_argentina, "");
-            texto_patente.setText(remove);
+                    String remove = replace_text.replace(texto[i], "");
+                    texto_patente.setText(remove);
+                }
+                }
+            }
         }
-    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////  METODOS PARA ORIENTAR LAS FOTOS ////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
 }
 
-/// API KAY de Google AIzaSyAWCk8_kyKvR20Np7IYYr5hHRsBC0GrN0M
+
+
+
+
+
+

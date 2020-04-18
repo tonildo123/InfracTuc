@@ -51,12 +51,9 @@
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="ocr" />
-        <!--<meta-data
-            android:name="com.google.android.key=API_KEY"
-            android:value="AIzaSyAWCk8_kyKvR20Np7IYYr5hHRsBC0GrN0M"/>-->
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+                   android:value="@string/facebook_app_id"/>
 
-
-        <!-- PARA ASUR CAMARA EN ANDROID 7 o mas -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

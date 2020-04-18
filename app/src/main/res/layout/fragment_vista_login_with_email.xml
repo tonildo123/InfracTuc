@@ -12,6 +12,7 @@
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:text="@string/texto_ultimar_detalle" />
 
     <TextView
@@ -41,6 +42,7 @@
         android:id="@+id/imageView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/infractuctres" />
+        android:src="@drawable/infractuctres"
+        android:contentDescription="@string/description_photo"/>
 
 </LinearLayout>

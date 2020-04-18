@@ -33,6 +33,10 @@
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="50dp"
             android:contentDescription="@string/description_photo"
             android:src="@drawable/denunciavial" />
 
@@ -66,7 +70,7 @@
             android:id="@+id/button_salir"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#26ECF0"
+            android:background="@color/com_facebook_button_background_color_pressed"
             android:text="@string/boton_salir"
             android:textColor="#FFFFFF"
             android:textSize="30sp" />
